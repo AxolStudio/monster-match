@@ -1,0 +1,17 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="demo_frame_1.png" x="0" y="0" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_2.png" x="30" y="90" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_3.png" x="90" y="30" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_4.png" x="90" y="0" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_5.png" x="60" y="90" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_6.png" x="60" y="60" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_7.png" x="60" y="30" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_8.png" x="60" y="0" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_9.png" x="90" y="60" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_10.png" x="30" y="60" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_11.png" x="30" y="30" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_12.png" x="30" y="0" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_13.png" x="0" y="90" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_14.png" x="0" y="60" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+	<SubTexture name="demo_frame_15.png" x="0" y="30" width="30" height="30" frameX="-0" frameY="-0" frameWidth="30" frameHeight="30" />
+</TextureAtlas>

@@ -1,0 +1,45 @@
+{"environments": [
+	{
+		"name" : "gardens",
+		"id" : "0",
+		"monsters" : [
+			"spider", "snake", "scorpion", "bear"
+		]
+	}, {
+		"name" : "dungeons",
+		"id" : "1",
+		"monsters" : [
+			"slime", "ghost", "kobold", "goblin"
+		]
+	}, {
+		"name" : "catacomb",
+		"id" : "2",
+		"monsters" : [
+			"skeleton", "orc", "serpent", "skulker", "screamer"
+		]
+	}, {
+		"name" : "viaduct",
+		"id" : "3",
+		"monsters" : [
+			"mummy", "assassin", "bone warrior", "imp", "hopper"
+		]
+	}, {
+		"name" : "ruins",
+		"id" : "4",
+		"monsters" : [
+			"golem", "warlock", "ent", "pharoah", "demon", "ember"
+		]
+	}, {
+		"name" : "ramparts",
+		"id" : "5",
+		"monsters" : [
+			"dragon", "vampire", "beholder", "bone mage", "magma golem", "mind flayer"
+		]
+	}, {
+		"name" : "sanctum",
+		"id" : "6",
+		"monsters" : [
+			"crystal archer", "crystal mage", "crystal paladin", "crystal warrior", "crystal dragon", "crystal golem"
+		]
+	}
+]}
