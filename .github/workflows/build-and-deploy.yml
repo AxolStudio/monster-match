@@ -50,11 +50,11 @@ jobs:
       - run: haxelib install hxcpp 4.1.15 --quiet
       - run: haxelib install hscript 2.4.0 --quiet
       - run: haxelib install sure 0.1.1 --quiet
-      - run: haxelib run lime build game ${{matrix.target}} -clean -nolaunch
+      - run: haxelib run lime build ${{matrix.target}} -clean -nolaunch
       - run: curl -L -o butler.zip "https://broth.itch.ovh/butler/${{matrix.butler}}/LATEST/archive/default"
       - run: unzip butler.zip
       - run: chmod +x butler
       - run: ./butler -V
       - env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
-        run: ./butler push game/export/${{matrix.folder}}/bin axolstudio/monster-match:${{matrix.channel}} --if-changed
+        run: ./butler push export/${{matrix.folder}}/bin axolstudio/monster-match:${{matrix.channel}} --if-changed
