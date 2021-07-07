@@ -23,6 +23,14 @@ class Globals
 
         AxolAPI.initialize(AXOL_KEY);
 
+#if debug
+        trace(AXOL_KEY);
+#end
+
+#if ng
+        NGAPI.init();
+#end
+
         Save = new FlxSave();
         Save.bind("MonsterMatch-userData");
         var playerID:String;

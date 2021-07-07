@@ -204,9 +204,6 @@ class PlayState extends FlxState
 
     public function returnFromSpellChoice(Selection:Int):Void
     {
-        // actually cast spell in the future
-        // castingSpell = false;
-
         Counts.add("spells_cast", 1);
 
         switch (Selection)
@@ -232,6 +229,10 @@ class PlayState extends FlxState
 
     private function shuffleMonsters():Void
     {
+#if ng
+        NGAPI.giveMedal(63811);
+#end
+
         var tmp:Array<Block> = [];
         var types:Array<Int> = [];
         for (b in blocks)
@@ -293,6 +294,10 @@ class PlayState extends FlxState
 
     private function removeMinority():Void
     {
+#if ng
+        NGAPI.giveMedal(63812);
+#end
+
         var matches:Array<MatchData> = [];
 
         var targetType:String = FlxG.random.getObject(thisEnvironment.monsters);
@@ -369,6 +374,10 @@ class PlayState extends FlxState
 
     private function meteors():Void
     {
+#if ng
+        NGAPI.giveMedal(63813);
+#end
+
         var targets:Array<FlxPoint> = [];
 
         var matches:Array<MatchData> = [];
@@ -1067,6 +1076,9 @@ class PlayState extends FlxState
         {
             // that was the last hero! VICTORY!
             score += 10000;
+#if ng
+            NGAPI.giveMedal(63809);
+#end
             openSubState(new GameOver(true, score));
         }
         else
@@ -1098,6 +1110,11 @@ class PlayState extends FlxState
     public function nextEnv():Void
     {
         Sounds.play("finished_area", .66);
+
+#if ng
+        NGAPI.giveMedal(63802 + currentEnv);
+#end
+
         if (currentEnv == EnvData.count() - 1)
         {
             // we just finished the final environment!!! GAME OVER!
@@ -2048,6 +2065,9 @@ class PlayState extends FlxState
                             b.isPotion = true;
                             b.scale.set(1, 1);
                             b.alpha = 1;
+#if ng
+                            NGAPI.giveMedal(63810);
+#end
                         }
                         else
                             b.kill();

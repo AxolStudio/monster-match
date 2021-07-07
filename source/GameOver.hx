@@ -283,6 +283,10 @@ class GameOver extends FlxSubState
                     Globals.Save.data.init = letters[initVals[0]] + letters[initVals[1]] + letters[initVals[2]];
                     Globals.Save.flush();
 
+#if ng
+                    NGAPI.submitScore(score);
+#end
+
                     AxolAPI.sendScore(score, letters[initVals[0]] + letters[initVals[1]] + letters[initVals[2]], scoreSent);
                 }
             }
