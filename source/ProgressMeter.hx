@@ -10,133 +10,130 @@ import flixel.tweens.FlxTween;
 
 class ProgressMeter extends FlxGroup
 {
+    public var x(default, set):Float = 0;
+    public var y(default, set):Float = 0;
+    public var back:FlxSliceSprite;
+    public var cap:FlxSprite;
+    public var party:FlxSprite;
+    public var door:FlxSprite;
+    public var whichEnv:Int = -1;
 
-	public var x(default, set):Float = 0;
-	public var y(default, set):Float = 0;
-	public var back:FlxSliceSprite;
-	public var cap:FlxSprite;
-	public var party:FlxSprite;
-	public var door:FlxSprite;
-	public var whichEnv:Int =-1;
+    public var progress(default, set):Float;
 
-	public var progress(default, set):Float;
+    public function new(X:Float, Y:Float)
+    {
+        super();
 
-	public function new(X:Float, Y:Float)
-	{
-		super();
+        x = X;
+        y = Y;
 
-		x = X;
-		y = Y;
+        back = new FlxSliceSprite(AssetPaths.progress_back__png, new FlxRect(0, 0, 1, 6), 46, 6);
+        back.x = x + 7;
+        back.y = y + 2;
+        add(back);
 
-		back = new FlxSliceSprite(AssetPaths.progress_back__png, new FlxRect(0, 0, 1, 6), 46, 6);
-		back.x = x+7;
-		back.y = y+2;
-		add(back);
+        cap = new FlxSprite(AssetPaths.progress_cap__png);
+        cap.x = back.x + back.width;
+        cap.y = back.y;
+        add(cap);
 
-		cap = new FlxSprite(AssetPaths.progress_cap__png);
-		cap.x = back.x +back.width;
-		cap.y = back.y;
-		add(cap);
+        door = new FlxSprite();
+        door.loadGraphic(AssetPaths.door_indicator__png, true, 8, 8);
 
-		door = new FlxSprite();
-		door.loadGraphic(AssetPaths.door_indicator__png, true, 8, 8);
+        door.x = back.x - (door.width / 2);
+        door.y = back.y + (back.height / 2) - (door.width / 2);
+        add(door);
 
-		door.x = back.x - (door.width / 2);
-		door.y = back.y + (back.height / 2) - (door.width / 2);
-		add(door);
+        party = new FlxSprite();
+        party.loadGraphic(AssetPaths.party_indicator__png);
+        party.x = back.x + back.width - (party.width / 2);
+        party.y = back.y + (back.height / 2) - (party.height / 2);
+        add(party);
 
-		party = new FlxSprite();
-		party.loadGraphic(AssetPaths.party_indicator__png);
-		party.x = back.x + back.width - (party.width / 2);
-		party.y = back.y + (back.height / 2) - (party.height / 2);
-		add(party);
+        progress = 0;
+    }
 
-		progress = 0;
+    private function set_progress(Value:Float):Float
+    {
+        progress = FlxMath.bound(Value, 0, 1);
 
-	}
+        if (progress >= .9)
+        {
+            if (whichEnv < 5)
+                door.animation.frameIndex = 1;
+            else
+                door.animation.frameIndex = 3;
+        }
+        else
+        {
+            if (whichEnv < 5)
+                door.animation.frameIndex = 0;
+            else
+                door.animation.frameIndex = 2;
+        }
 
-	private function set_progress(Value:Float):Float
-	{
-		progress = FlxMath.bound(Value, 0, 1);
+        if (progress == 0)
+        {
+            party.x = back.x + back.width - (party.width / 2);
+            if (party.alpha == 0)
+            {
+                party.scale.set(.5, .5);
+                FlxTween.tween(party, {alpha: 1}, .5, {type: FlxTweenType.ONESHOT, ease: FlxEase.circOut});
+                FlxTween.tween(party.scale, {x: 1, y: 1}, .5, {type: FlxTweenType.ONESHOT, ease: FlxEase.circOut});
+            }
+        }
+        else
+        {
+            FlxTween.tween(party, {x: FlxMath.lerp(back.x + back.width, back.x, progress) - (party.width / 2)}, .2, {
+                type: FlxTweenType.ONESHOT,
+                ease: FlxEase.circInOut,
+                onComplete: function(_)
+                {
+                    if (progress == 1)
+                    {
+                        FlxTween.tween(party, {alpha: 0}, .5, {type: FlxTweenType.ONESHOT, ease: FlxEase.circOut});
+                        FlxTween.tween(party.scale, {x: 1.5, y: 1.5}, .5, {type: FlxTweenType.ONESHOT, ease: FlxEase.circOut});
+                    }
+                }
+            });
+        }
 
-		if (progress >= .9)
-		{
-			if (whichEnv < 5)
-				door.animation.frameIndex = 1;
-			else
-				door.animation.frameIndex = 3;
-		}
-		else
-		{
-			if (whichEnv < 5)
-				door.animation.frameIndex = 0;
-			else
-				door.animation.frameIndex = 2;
-		}
+        return progress;
+    }
 
-		if (progress == 0)
-		{
+    private function set_x(Value:Float):Float
+    {
+        x = Value;
 
-			party.x = back.x + back.width - (party.width / 2);
-			if (party.alpha == 0)
-			{
-				party.scale.set(.5, .5);
-				FlxTween.tween(party, {alpha:1}, .5, {type:FlxTweenType.ONESHOT, ease:FlxEase.circOut});
-				FlxTween.tween(party.scale, {x:1, y:1}, .5, {type:FlxTweenType.ONESHOT, ease:FlxEase.circOut});
-			}
-		}
-		else
-		{
+        if (back != null && door != null && party != null)
+        {
+            back.x = x + 7;
 
-			FlxTween.tween(party, {x:FlxMath.lerp(back.x + back.width, back.x, progress) - (party.width / 2)}, .2, {
-				type:FlxTweenType.ONESHOT, ease:FlxEase.circInOut, onComplete:function(_)
-				{
-					if (progress == 1)
-					{
-						FlxTween.tween(party, {alpha:0}, .5, {type:FlxTweenType.ONESHOT, ease:FlxEase.circOut});
-						FlxTween.tween(party.scale, {x:1.5, y:1.5}, .5, {type:FlxTweenType.ONESHOT, ease:FlxEase.circOut});
-					}
-				}
-			});
-		}
+            cap.x = back.x + back.width;
 
-		return progress;
-	}
+            door.x = back.x - (door.width / 2);
 
-	private function set_x(Value:Float):Float
-	{
-		x = Value;
+            party.x = FlxMath.lerp(x + 53, x + 7, progress) - (party.width / 2);
+        }
 
-		if (back != null && door != null && party != null)
-		{
-			back.x = x + 7;
+        return x;
+    }
 
-			cap.x = back.x + back.width;
+    private function set_y(Value:Float):Float
+    {
+        y = Value;
 
-			door.x = back.x - (door.width / 2);
+        if (back != null && door != null && party != null)
+        {
+            back.y = y + 2;
 
-			party.x = FlxMath.lerp(x + 53, x + 7, progress) - (party.width / 2);
-		}
+            cap.y = back.y;
 
-		return x;
-	}
+            door.y = back.y + (back.height / 2) - (door.width / 2);
 
-	private function set_y(Value:Float):Float
-	{
-		y = Value;
+            party.y = back.y + (back.height / 2) - (party.height / 2);
+        }
 
-		if (back != null && door != null && party != null)
-		{
-			back.y = y + 2;
-
-			cap.y = back.y;
-
-			door.y =  back.y + (back.height / 2) - (door.width / 2);
-
-			party.y = back.y + (back.height / 2) - (party.height / 2);
-		}
-
-		return x;
-	}
-
+        return x;
+    }
 }

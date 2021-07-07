@@ -14,128 +14,127 @@ import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import openfl.utils.Object;
 
-class HiScoreState extends FlxSubState 
+class HiScoreState extends FlxSubState
 {
-	
-	public var messages:Array<FlxBitmapText>;
-	public var font:FlxBitmapFont;
-	public var ready:Bool = false;
-	public var frame:FlxSprite;
-	
-	
-	public var buttonReplay:FlxSpriteButton;
-	public var buttonQuit:FlxSpriteButton;
+    public var messages:Array<FlxBitmapText>;
+    public var font:FlxBitmapFont;
+    public var ready:Bool = false;
+    public var frame:FlxSprite;
 
-	public function new(Scores:Object, ?Initials:String = "$", ?Amount:Int = -1) 
-	{
-		super(FlxColor.TRANSPARENT);
-		ready = false;
-		messages = [];
-		font = FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml);
-		
-		frame = new FlxSprite(0, 0, AssetPaths.screen_frame__png);//FlxSliceSprite(AssetPaths.dark_frame__png, new FlxRect(2, 2, 2, 2), FlxG.width - 8, FlxG.height - 8);
-		frame.screenCenter(FlxAxes.XY);
-		frame.alpha = 0;
-		add(frame);
-		
-		addLine("Hi Scores");
-		addLine("");
-		
-		var scores:Array<Object> = Scores.data.scores.scores;
-		for (s in scores)
-		{
-			addLine(StringTools.rpad(s.initials + " ", ".", 20) + " " + StringTools.lpad(s.amount, "0", 6), s.initials == Initials && Std.parseInt(s.amount) == Amount);
-		}
-		
-		buttonReplay = new FlxSpriteButton(0, 0, null, closeReplay);//new FlxButton(0, 0, "Replay", closeReplay);
-		buttonReplay.loadGraphic(AssetPaths.replay_button__png, true, 36, 12);
-		buttonReplay.x = frame.x + 2;
-		buttonReplay.y = frame.y + frame.height - 2 - buttonReplay.height;
+    public var buttonReplay:FlxSpriteButton;
+    public var buttonQuit:FlxSpriteButton;
 
-		buttonQuit = new FlxSpriteButton(0, 0, null, closeQuit);//new FlxButton(0, 0, "Replay", closeReplay);
-		buttonQuit.loadGraphic(AssetPaths.exit_button__png, true, 36, 12);
-		buttonQuit.x = frame.x + frame.width -  2 - buttonQuit.width;
-		buttonQuit.y = frame.y + frame.height - 2 - buttonQuit.height;
+    public function new(Scores:Object, ?Initials:String = "$", ?Amount:Int = -1)
+    {
+        super(FlxColor.TRANSPARENT);
+        ready = false;
+        messages = [];
+        font = FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml);
 
-		buttonQuit.alpha = buttonReplay.alpha = 0;
+        frame = new FlxSprite(0, 0, AssetPaths.screen_frame__png);
+        frame.screenCenter(FlxAxes.XY);
+        frame.alpha = 0;
+        add(frame);
 
-		add(buttonReplay);
-		add(buttonQuit);
-		
-	}
-	
-	private function closeReplay():Void
-	{
-		if (!ready)
-			return;
-		ready = false;
-		Sounds.play("click", .2);
-		FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
-		{
-			FlxG.switchState(new PlayState());
-		});
-	}
+        addLine("Hi Scores");
+        addLine("");
 
-	private function closeQuit():Void
-	{
-		if (!ready)
-			return;
-		ready = false;
-		Sounds.play("click", .2);
-		FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
-		{
-			FlxG.switchState(new TitleState());
-		});
-	}
+        var scores:Array<Object> = Scores.data.scores.scores;
+        for (s in scores)
+        {
+            addLine(StringTools.rpad(s.initials + " ", ".", 20) + " " +
+                StringTools.lpad(s.amount, "0", 6), s.initials == Initials && Std.parseInt(s.amount) == Amount);
+        }
 
-	
-	override public function create():Void 
-	{
-		
-		FlxTween.tween(frame, {alpha:1}, .2, {type:FlxTweenType.ONESHOT, ease:FlxEase.circOut});
-		
-		var m:FlxBitmapText = null;
-		for (i in 0...messages.length)
-		{
-			m  = messages[i];
-			
-			FlxTween.tween(m, {alpha:1}, .2, {type:FlxTweenType.ONESHOT, ease:FlxEase.circOut, startDelay: i *.2});
-		}
-		
-		FlxTween.num(0, 1, .2, {type:FlxTweenType.ONESHOT, ease:FlxEase.circOut, startDelay: messages.length * .2, onComplete:function(_) {
-			ready = true;
-		}}, function(Value:Float){
-			buttonQuit.alpha = buttonReplay.alpha = Value;
-		});
-		
-		super.create();
-	}
-	
-	
-	
-	private function addLine(Text:String, ?Rainbow:Bool = false):Void
-	{
-		var t:FlxBitmapText;
-		if (Rainbow)
-		{
-			t = new RainbowText(font);
-		}
-		else
-		{
-			t = new FlxBitmapText(font);
-		}
-		
-		t.text = Text;
-		t.alignment = FlxTextAlign.CENTER;
-		t.borderStyle = FlxTextBorderStyle.SHADOW;
-		t.borderColor = 0xff333333;
-		t.borderSize = 1;
-		t.y = 8  + (messages.length * 8);
-		t.screenCenter(FlxAxes.X);
-		t.alpha = 0;
-		messages.push(t);
-		add(t);
-		
-	}
-	
+        buttonReplay = new FlxSpriteButton(0, 0, null, closeReplay);
+        buttonReplay.loadGraphic(AssetPaths.replay_button__png, true, 36, 12);
+        buttonReplay.x = frame.x + 2;
+        buttonReplay.y = frame.y + frame.height - 2 - buttonReplay.height;
+
+        buttonQuit = new FlxSpriteButton(0, 0, null, closeQuit);
+        buttonQuit.loadGraphic(AssetPaths.exit_button__png, true, 36, 12);
+        buttonQuit.x = frame.x + frame.width - 2 - buttonQuit.width;
+        buttonQuit.y = frame.y + frame.height - 2 - buttonQuit.height;
+
+        buttonQuit.alpha = buttonReplay.alpha = 0;
+
+        add(buttonReplay);
+        add(buttonQuit);
+    }
+
+    private function closeReplay():Void
+    {
+        if (!ready)
+            return;
+        ready = false;
+        Sounds.play("click", .2);
+        FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
+        {
+            FlxG.switchState(new PlayState());
+        });
+    }
+
+    private function closeQuit():Void
+    {
+        if (!ready)
+            return;
+        ready = false;
+        Sounds.play("click", .2);
+        FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
+        {
+            FlxG.switchState(new TitleState());
+        });
+    }
+
+    override public function create():Void
+    {
+        FlxTween.tween(frame, {alpha: 1}, .2, {type: FlxTweenType.ONESHOT, ease: FlxEase.circOut});
+
+        var m:FlxBitmapText = null;
+        for (i in 0...messages.length)
+        {
+            m = messages[i];
+
+            FlxTween.tween(m, {alpha: 1}, .2, {type: FlxTweenType.ONESHOT, ease: FlxEase.circOut, startDelay: i * .2});
+        }
+
+        FlxTween.num(0, 1, .2, {
+            type: FlxTweenType.ONESHOT,
+            ease: FlxEase.circOut,
+            startDelay: messages.length * .2,
+            onComplete: function(_)
+            {
+                ready = true;
+            }
+        }, function(Value:Float)
+        {
+            buttonQuit.alpha = buttonReplay.alpha = Value;
+        });
+
+        super.create();
+    }
+
+    private function addLine(Text:String, ?Rainbow:Bool = false):Void
+    {
+        var t:FlxBitmapText;
+        if (Rainbow)
+        {
+            t = new RainbowText(font);
+        }
+        else
+        {
+            t = new FlxBitmapText(font);
+        }
+
+        t.text = Text;
+        t.alignment = FlxTextAlign.CENTER;
+        t.borderStyle = FlxTextBorderStyle.SHADOW;
+        t.borderColor = 0xff333333;
+        t.borderSize = 1;
+        t.y = 8 + (messages.length * 8);
+        t.screenCenter(FlxAxes.X);
+        t.alpha = 0;
+        messages.push(t);
+        add(t);
+    }
 }

@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Monster Match" file="MonsterMatch" main="Main" version="1.0.1" company="Axol Studio, LLC" />
+	<app title="Monster Match" file="MonsterMatch" main="Main" version="1.0.2" company="Axol Studio, LLC" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -17,7 +17,7 @@
 	<window width="800" height="600" fps="60" background="#333333" hardware="true" vsync="false" />
 
 	<!--<window borderless="true"/>-->
-	
+
 	<!--HTML5-specific-->
 	<window if="html5" resizable="false" />
 
@@ -29,20 +29,30 @@
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
+	<set name="BUILD_DIR" value="export" unless="ng" />
+	<set name="BUILD_DIR" value="export/ng" if="ng" />
+
 	<set name="BUILD_DIR" value="export" />
 	<classpath name="source" />
-	<assets path="assets" embed="true" />
+
+	<assets path="assets/images" include="*.png|*.xml" embed="true" />
+	<assets path="assets/data" rename="assets/data" include="*.json" embed="true" />
+	<assets path="assets/music" rename="assets/music" include="*.ogg" embed="true" />
+	<assets path="assets/sounds" rename="assets/sounds" include="*.wav" embed="true" />
+
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	
+
 	<haxelib name="flixel" />
 
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
-	
+
 	<haxelib name="axollib" />
-	
+
+	<haxelib name="newgrounds" if="ng" />
+
 	<!--In case you want to use the ui package-->
 	<!--<haxelib name="flixel-ui" />-->
 
@@ -84,6 +94,6 @@
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
-	
+
 	<icon path="assets/icons/icon.png" />
 </project>
