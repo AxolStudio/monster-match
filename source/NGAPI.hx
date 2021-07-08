@@ -19,6 +19,10 @@ package;
     import flixel.FlxG;
     import flixel.util.FlxColor;
     import openfl.Assets;
+    import flixel.util.FlxTimer;
+    import io.newgrounds.objects.events.Response;
+    import io.newgrounds.objects.events.Result.PingResult;
+    import io.newgrounds.Call;
 
     class NGAPI
     {
@@ -29,6 +33,8 @@ package;
     public static inline var SCOREBOARD_ID:Int = 10380;
 
     public static var loggedIn:Bool = false;
+
+    public static var keepAlive:FlxTimer;
 
     public static function init():Void
     {
@@ -52,46 +58,79 @@ package;
                 trace(NG.core.attemptingLogin);
     #end
 
-            if (NG.core.attemptingLogin)
-            {
-                /* a session_id was found in the loadervars, this means the user is playing on newgrounds.com
-                 * and we should login shortly. lets wait for that to happen
-                 */
-    #if debug
-                    trace("attempting login");
-    #end
-
-                NG.core.onLogin.add(onNGLogin);
-            }
-            else
-            {
-                /* They are NOT playing on newgrounds.com, no session id was found. We must start one manually, if we want to.
-                 * Note: This will cause a new browser window to pop up where they can log in to newgrounds
-                 */
-    #if debug
-                    trace("request login");
-    #end
-                NG.core.requestLogin(onNGLogin);
-            }
+            attemptLogin();
         }
     }
 
-    private static function onNGLogin():Void
+    private static function attemptLogin(?Callback:Null<Void->Void>):Void
+    {
+        if (NG.core.attemptingLogin)
+        {
+            /* a session_id was found in the loadervars, this means the user is playing on newgrounds.com
+             * and we should login shortly. lets wait for that to happen
+             */
+    #if debug
+                trace("attempting login");
+    #end
+
+            NG.core.onLogin.add(onNGLogin.bind(Callback));
+        }
+        else
+        {
+            /* They are NOT playing on newgrounds.com, no session id was found. We must start one manually, if we want to.
+             * Note: This will cause a new browser window to pop up where they can log in to newgrounds
+             */
+    #if debug
+                trace("request login");
+    #end
+            NG.core.requestLogin(onNGLogin.bind(Callback));
+        }
+    }
+
+    private static function onNGLogin(Callback:Null<Void->Void>):Void
     {
     #if debug
             trace('logged in! user:${NG.core.user.name}');
     #end
 
         loggedIn = true;
-        NG.core.requestMedals(() -> {
+
+        keepAlive = new FlxTimer().start(300, doPing, 1);
+
+        NG.core.requestMedals(() ->
+        {
     #if debug
                 giveMedal(63809);
     #end
+            if (Callback != null)
+                Callback();
         });
+    }
+
+    private static function doPing(Timer:FlxTimer):Void
+    {
+        var call:Call<PingResult> = NG.core.calls.gateway.ping();
+        call.addDataHandler(onPing);
+        call.send();
+    }
+
+    private static function onPing(Response:Response<PingResult>):Void
+    {
+        if (Response.success && Response.result.data.success)
+        {
+            keepAlive.reset(300);
+        }
+        else
+            loggedIn = false;
     }
 
     public static function giveMedal(MedalID:Int):Void
     {
+        if (!loggedIn)
+        {
+            attemptLogin(giveMedal.bind(MedalID));
+            return;
+        }
         var medal:Medal = NG.core.medals.get(MedalID);
         medal.onUnlock.add(showMedal.bind(medal));
     #if debug
@@ -116,6 +155,11 @@ package;
 
     public static function submitScore(Score:Int):Void
     {
+        if (!loggedIn)
+        {
+            attemptLogin(submitScore.bind(Score));
+            return;
+        }
         NG.core.requestScoreBoards(() ->
         {
             NG.core.scoreBoards.get(SCOREBOARD_ID).postScore(Score);
@@ -316,11 +360,13 @@ package;
         if (!SOUND_IN && top.animation.frameIndex >= 5)
         {
             // oundPlayer.play_sound(AssetPaths.ng_medal_GET__ogg);
+            Sounds.play("ng_medal_GET", .5);
             SOUND_IN = true;
         }
         if (!SOUND_OUT && top.animation.frameIndex >= 47)
         {
             // SoundPlayer.play_sound(AssetPaths.ng_medal_GOT__ogg);
+            Sounds.play("ng_medal_GOT", .5);
             SOUND_OUT = true;
         }
     }

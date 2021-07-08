@@ -1782,7 +1782,8 @@ class PlayState extends FlxState
                 }
             }
         }
-        if (whichT != null)
+        var m:MonsterData = MonsterData.getFromID(MonsterID);
+        if (whichT != null && m != null)
         {
             var amount:Float = 0;
             var n:Float = 0;
@@ -1805,7 +1806,7 @@ class PlayState extends FlxState
 
             giveScore(Std.int(n * 150));
 
-            spawnJuice(X + 4, Y + 4, MonsterData.getFromID(MonsterID).color, whichT.x + 4, whichT.y + 12);
+            spawnJuice(X + 4, Y + 4, m.color, whichT.x + 4, whichT.y + 12);
 
             if (amt >= 1)
             {
