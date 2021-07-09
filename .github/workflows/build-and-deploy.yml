@@ -13,11 +13,6 @@ jobs:
             channel: html5
             folder: html5
             butler: windows-amd64
-          - os: ubuntu-latest
-            target: linux
-            channel: linux
-            folder: linux
-            butler: linux-amd64
           - os: windows-latest
             target: windows
             channel: windows
@@ -28,6 +23,11 @@ jobs:
             channel: mac
             folder: macos
             butler: darwin-amd64
+         # - os: ubuntu-latest
+         #   target: linux
+         #   channel: linux
+         #   folder: linux
+         #   butler: linux-amd64
                        
     runs-on: ${{matrix.os}}
     
