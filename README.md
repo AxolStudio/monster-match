@@ -1,3 +1,5 @@
+[![HTML5](https://github.com/AxolStudio/monster-match/actions/workflows/HTML5.yml/badge.svg)](https://github.com/AxolStudio/monster-match/actions/workflows/HTML5.yml)
+
 # Monster Match
 This is the source code for a game I made for Halloween 2019. It was made in a month and is available to purchase on itch.io.
 
