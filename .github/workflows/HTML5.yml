@@ -1,6 +1,12 @@
 name: HTML5
 
-on: [workflow_dispatch]
+on: 
+  workflow_dispatch:
+    branches:
+      - master
+  push:
+    branches:
+      - master
 
 jobs:
   build:
