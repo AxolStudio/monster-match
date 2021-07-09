@@ -14,7 +14,7 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="800" height="600" fps="60" background="#333333" hardware="true" vsync="false" />
+	<window width="800" height="600" fps="120" background="#333333" hardware="true" vsync="true" />
 
 	<!--<window borderless="true"/>-->
 
@@ -26,6 +26,8 @@
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
+
+	<window allow-high-dpi="true" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
