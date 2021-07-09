@@ -1,4 +1,4 @@
-name: Build and Deploy 🌩
+name: HTML5
 
 on: [workflow_dispatch]
 
