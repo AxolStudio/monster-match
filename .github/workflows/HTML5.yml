@@ -2,8 +2,6 @@ name: HTML5
 
 on: 
   workflow_dispatch:
-    branches:
-      - master
   push:
     branches:
       - master
