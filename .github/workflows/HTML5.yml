@@ -47,13 +47,19 @@ jobs:
           token: ${{secrets.PAT}}
       - run: haxelib install lime 7.8.0 --quiet
       - run: haxelib install openfl 9.0.2 --quiet
-      - run: haxelib install flixel 4.8.1 --quiet
       - run: haxelib install flixel-addons 2.9.0 --quiet
       - run: haxelib install flixel-ui 2.3.3 --quiet
       - run: haxelib dev axollib axollib --quiet
       - run: haxelib install hxcpp 4.1.15 --quiet
       - run: haxelib install hscript 2.4.0 --quiet
       - run: haxelib install sure 0.1.1 --quiet
+      - uses: actions/checkout@v2
+        with:
+          repository: axolstudio/flixel
+          path: flixel
+          ref: dev
+          token: ${{secrets.PAT}}
+      - run: haxelib dev flixel flixel --quiet
       - run: haxelib run lime build ${{matrix.target}} -clean -nolaunch
       - run: curl -L -o butler.zip "https://broth.itch.ovh/butler/${{matrix.butler}}/LATEST/archive/default"
       - run: unzip butler.zip
