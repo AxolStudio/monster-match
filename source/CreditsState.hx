@@ -30,7 +30,7 @@ class CreditsState extends FlxState
         ready = false;
         messages = [];
         messages2 = [];
-        font = FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml);
+        font = FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml");
 
         addLine("Credits");
         addLine("");
@@ -46,13 +46,13 @@ class CreditsState extends FlxState
         addLine("axolstudio.com");
 
         buttonQuit = new FlxSpriteButton(0, 0, null, closeQuit); // new FlxButton(0, 0, "Replay", closeReplay);
-        buttonQuit.loadGraphic(AssetPaths.exit_button__png, true, 36, 12);
+        buttonQuit.loadGraphic(GraphicsCache.loadGraphic("assets/images/exit_button.png"), true, 36, 12);
         buttonQuit.x = FlxG.width - 2 - buttonQuit.width;
         buttonQuit.y = FlxG.height - 2 - buttonQuit.height;
         buttonQuit.alpha = 0;
         add(buttonQuit);
 
-        logo = new FlxSprite(0, messages[5].y + messages[5].height + 2, AssetPaths.axol_logo__png);
+        logo = new FlxSprite(0, messages[5].y + messages[5].height + 2, "assets/images/axol_logo.png");
         logo.alpha = 0;
         logo.screenCenter(FlxAxes.X);
         add(logo);

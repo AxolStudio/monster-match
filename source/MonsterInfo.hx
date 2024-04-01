@@ -36,10 +36,10 @@ class MonsterInfo extends FlxGroup
         monster = new FlxSprite();
         monster.x = X + 2;
         monster.y = Y + 2;
-        monster.loadGraphic(AssetPaths.monsters__png, true, 8, 8);
+        monster.loadGraphic(GraphicsCache.loadGraphic("assets/images/monsters.png"), true, 8, 8);
         monster.animation.frameIndex = mDef.id;
 
-        name = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml));
+        name = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml"));
         name.text = mDef.name;
         name.borderStyle = FlxTextBorderStyle.SHADOW;
         name.borderColor = 0xff111111;
@@ -47,7 +47,7 @@ class MonsterInfo extends FlxGroup
         name.x = monster.x + monster.width + 2;
         name.y = Y + 3;
 
-        hpLabel = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml));
+        hpLabel = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml"));
         hpLabel.borderStyle = FlxTextBorderStyle.SHADOW;
         hpLabel.borderColor = 0xff111111;
         hpLabel.borderSize = 1;
@@ -62,7 +62,7 @@ class MonsterInfo extends FlxGroup
         hpBar.x = hpLabel.x + hpLabel.width;
         hpBar.y = hpLabel.y + 2;
 
-        attLabel = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml));
+        attLabel = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml"));
         attLabel.borderStyle = FlxTextBorderStyle.SHADOW;
         attLabel.borderColor = 0xff111111;
         attLabel.borderSize = 1;
@@ -80,7 +80,7 @@ class MonsterInfo extends FlxGroup
             attBar.y = attLabel.y + 2;
         }
 
-        pdefLabel = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml));
+        pdefLabel = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml"));
         pdefLabel.borderStyle = FlxTextBorderStyle.SHADOW;
         pdefLabel.borderColor = 0xff111111;
         pdefLabel.borderSize = 1;
@@ -98,7 +98,7 @@ class MonsterInfo extends FlxGroup
             pdefBar.y = hpBar.y;
         }
 
-        sdefLabel = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml));
+        sdefLabel = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml"));
         sdefLabel.borderStyle = FlxTextBorderStyle.SHADOW;
         sdefLabel.borderColor = 0xff111111;
         sdefLabel.borderSize = 1;
@@ -117,7 +117,7 @@ class MonsterInfo extends FlxGroup
         }
 
         back = new FlxSprite();
-        back.loadGraphic(AssetPaths.info_back__png); // new FlxSliceSprite(AssetPaths.dark_frame__png, new FlxRect(2, 2, 2, 2), (hpLabel.width *2) + 56, monster.height + (hpLabel.height*2) + 6);
+        back.loadGraphic(GraphicsCache.loadGraphic("assets/images/info_back.png")); // new FlxSliceSprite("assets/images/dark_frame.png", new FlxRect(2, 2, 2, 2), (hpLabel.width *2) + 56, monster.height + (hpLabel.height*2) + 6);
         back.x = X;
         back.y = Y;
         back.color = FlxColor.fromString("#" + mDef.color);

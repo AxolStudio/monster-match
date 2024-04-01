@@ -5,9 +5,10 @@
 			"type": "lime",
 			"command": "test",
 			"group": {
-				"kind": "build",
+				"kind": "test",
 				"isDefault": true
-			}
-		}
+			},
+			"label": "lime: test (active configuration)"
+		},
 	]
 }

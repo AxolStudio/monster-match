@@ -11,7 +11,7 @@ class ScoreDisplay extends FlxBitmapText
 
     public function new()
     {
-        super(FlxBitmapFont.fromAngelCode(AssetPaths.large_numbers__png, AssetPaths.large_numbers__xml));
+        super(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/large_numbers.png"), "assets/images/large_numbers.xml"));
         autoSize = false;
         fieldWidth = 56;
         alignment = FlxTextAlign.RIGHT;

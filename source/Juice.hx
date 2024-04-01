@@ -11,7 +11,7 @@ class Juice extends FlxSprite
     {
         super();
 
-        loadGraphic(AssetPaths.juice__png, true, 8, 8);
+        loadGraphic(GraphicsCache.loadGraphic("assets/images/juice.png"), true, 8, 8);
         animation.add("play", [0, 1], 12, true);
 
         kill();

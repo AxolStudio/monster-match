@@ -9,7 +9,7 @@ class Explosion extends FlxSprite
     {
         super();
 
-        frames = GraphicsCache.loadGraphicFromAtlas("explosion", AssetPaths.explosion__png, AssetPaths.explosion__xml).atlasFrames;
+        frames = GraphicsCache.loadGraphicFromAtlas("assets/images/explosion.png", "assets/images/explosion.xml").atlasFrames;
 
         animation.addByPrefix("explosion", "regularExplosion0", 8, false);
 

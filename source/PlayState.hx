@@ -160,12 +160,12 @@ class PlayState extends FlxState
         buildGrid();
 
         selector = new FlxSprite();
-        selector.loadGraphic(AssetPaths.selecting__png);
+        selector.loadGraphic(GraphicsCache.loadGraphic("assets/images/selecting.png"));
         selector.visible = false;
         add(selector);
 
         selected = new FlxSprite();
-        selected.loadGraphic(AssetPaths.selected__png);
+        selected.loadGraphic(GraphicsCache.loadGraphic("assets/images/selected.png"));
         selected.visible = false;
         add(selected);
 
@@ -482,7 +482,7 @@ class PlayState extends FlxState
     private function createHero():Void
     {
         fightingHero = new FlxSprite(HEROSTARTX, HEROSTARTY);
-        fightingHero.loadGraphic(AssetPaths.heroes__png, true, 8, 8);
+        fightingHero.loadGraphic(GraphicsCache.loadGraphic("assets/images/heroes.png"), true, 8, 8);
         fightingHero.flipX = true;
         fightingHero.alpha = 0;
         add(fightingHero);
@@ -496,7 +496,7 @@ class PlayState extends FlxState
     private function createMonster():Void
     {
         fightingMonster = new FlxSprite(MONSTERSTARTX, MONSTERSTARTY);
-        fightingMonster.loadGraphic(AssetPaths.monsters__png, true, 8, 8);
+        fightingMonster.loadGraphic(GraphicsCache.loadGraphic("assets/images/monsters.png"), true, 8, 8);
         fightingMonster.alpha = 0;
         add(fightingMonster);
 
@@ -509,11 +509,11 @@ class PlayState extends FlxState
     private function createUI():Void
     {
         var bg:FlxTileblock = new FlxTileblock(-3, -2, 170, 130);
-        bg.loadTiles(AssetPaths.background__png, 10, 10);
+        bg.loadTiles(GraphicsCache.loadGraphic("assets/images/background.png"), 10, 10);
         add(bg);
 
         var backColor:FlxTileblock = new FlxTileblock(7, 28, 80, 80);
-        backColor.loadTiles(AssetPaths.grid_back__png, 10, 10);
+        backColor.loadTiles("assets/images/grid_back.png", 10, 10);
         add(backColor);
 
         blocks = new FlxTypedGroup<Block>();
@@ -544,32 +544,32 @@ class PlayState extends FlxState
             }
         }
 
-        var border:FlxSliceSprite = new FlxSliceSprite(AssetPaths.GameFieldBottom__png, new FlxRect(2, 2, 2, 2), 5, 124);
+        var border:FlxSliceSprite = new FlxSliceSprite(GraphicsCache.loadGraphic("assets/images/GameFieldBottom.png"), new FlxRect(2, 2, 2, 2), 5, 124);
         border.x = 2;
         border.y = -2;
         add(border);
 
-        border = new FlxSliceSprite(AssetPaths.GameFieldBottom__png, new FlxRect(2, 2, 2, 2), 5, 124);
+        border = new FlxSliceSprite(GraphicsCache.loadGraphic("assets/images/GameFieldBottom.png"), new FlxRect(2, 2, 2, 2), 5, 124);
         border.x = 87;
         border.y = -2;
         add(border);
 
-        var top:FlxSliceSprite = new FlxSliceSprite(AssetPaths.GameFieldBottom__png, new FlxRect(2, 2, 2, 2), 84, 30);
+        var top:FlxSliceSprite = new FlxSliceSprite(GraphicsCache.loadGraphic("assets/images/GameFieldBottom.png"), new FlxRect(2, 2, 2, 2), 84, 30);
         top.x = 5;
         top.y = 108;
         add(top);
 
-        top = new FlxSliceSprite(AssetPaths.GameFieldBottom__png, new FlxRect(2, 2, 2, 2), 84, 31);
+        top = new FlxSliceSprite(GraphicsCache.loadGraphic("assets/images/GameFieldBottom.png"), new FlxRect(2, 2, 2, 2), 84, 31);
         top.x = 5;
         top.y = -3;
         top.angle = 180;
         add(top);
 
-        lich = new FlxSprite(8, 18, AssetPaths.lich_lord__png);
+        lich = new FlxSprite(8, 18, "assets/images/lich_lord.png");
         add(lich);
 
         cauldron = new FlxSprite(16, 18);
-        cauldron.loadGraphic(AssetPaths.cauldron__png, true, 8, 8);
+        cauldron.loadGraphic(GraphicsCache.loadGraphic("assets/images/cauldron.png"), true, 8, 8);
         cauldron.animation.add("normal", [0]);
         cauldron.animation.add("burst", [1, 2, 3, 4, 5, 0], 8, false);
         cauldron.animation.play("normal");
@@ -590,7 +590,7 @@ class PlayState extends FlxState
         floatingNumbers = new FlxTypedGroup<FloatingNumber>();
         add(floatingNumbers);
 
-        var scoreback:FlxSprite = new FlxSprite(96, 3, AssetPaths.score_back__png);
+        var scoreback:FlxSprite = new FlxSprite(96, 3, "assets/images/score_back.png");
         add(scoreback);
 
         scoreDisp = new ScoreDisplay();
@@ -599,7 +599,7 @@ class PlayState extends FlxState
         add(scoreDisp);
         scoreDisp.text = "0";
 
-        border = new FlxSliceSprite(AssetPaths.GameFieldBottom__png, new FlxRect(2, 2, 2, 2), 64, 40);
+        border = new FlxSliceSprite(GraphicsCache.loadGraphic("assets/images/GameFieldBottom.png"), new FlxRect(2, 2, 2, 2), 64, 40);
         border.x = 94;
         border.y = 21;
         border.angle = 180;
@@ -616,7 +616,7 @@ class PlayState extends FlxState
         backdrop = new Environment(border.x + 2, border.y + 5, 0);
         envLayer.add(backdrop);
 
-        envTitle = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.fancy_font__png, AssetPaths.fancy_font__xml));
+        envTitle = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/fancy_font.png"), "assets/images/fancy_font.xml"));
         envTitle.x = backdrop.x;
         envTitle.y = backdrop.y + backdrop.height;
         envTitle.autoSize = false;
@@ -632,7 +632,8 @@ class PlayState extends FlxState
 
         add(progress);
 
-        heroCounter = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.tiny_digits__png, AssetPaths.tiny_digits__xml));
+        heroCounter = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/tiny_digits.png"),
+            "assets/images/tiny_digits.xml"));
 
         heroCounter.autoSize = false;
         heroCounter.fieldWidth = 30;
@@ -648,7 +649,8 @@ class PlayState extends FlxState
 
         MONSTERSTARTY = HEROSTARTY = Std.int(backdrop.y + backdrop.height - 8 - 1);
 
-        monstDmgNo = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.tiny_digits__png, AssetPaths.tiny_digits__xml));
+        monstDmgNo = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/tiny_digits.png"),
+            "assets/images/tiny_digits.xml"));
         monstDmgNo.text = "0";
         monstDmgNo.x = 0;
         monstDmgNo.y = MONSTERSTARTY - 6;
@@ -659,7 +661,7 @@ class PlayState extends FlxState
         monstDmgNo.alpha = 0;
         add(monstDmgNo);
 
-        heroDmgNo = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.tiny_digits__png, AssetPaths.tiny_digits__xml));
+        heroDmgNo = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/tiny_digits.png"), "assets/images/tiny_digits.xml"));
         heroDmgNo.text = "0";
         heroDmgNo.x = 0;
         heroDmgNo.y = MONSTERSTARTY - 6;
@@ -671,14 +673,14 @@ class PlayState extends FlxState
         add(heroDmgNo);
 
         heroSkull = new FlxSprite();
-        heroSkull.loadGraphic(AssetPaths.skull__png, false);
+        heroSkull.loadGraphic(GraphicsCache.loadGraphic("assets/images/skull.png"), false);
         heroSkull.flipX = true;
         heroSkull.alpha = 0;
         heroSkull.kill();
         add(heroSkull);
 
         refillBar = new FlxBar(7, 110, FlxBarFillDirection.LEFT_TO_RIGHT, 80, 10, this, "refillTimer", 0, REFILL_TIME, true);
-        refillBar.createImageBar(AssetPaths.refill_empty__png, AssetPaths.refill_fill__png);
+        refillBar.createImageBar("assets/images/refill_empty.png", "assets/images/refill_fill.png");
         add(refillBar);
 
         sprMeteors = [new Meteor(), new Meteor(), new Meteor()]; // , new Meteor(), new Meteor()];
@@ -691,90 +693,90 @@ class PlayState extends FlxState
         add(explosions[1]);
         add(explosions[2]);
 
-        var mapBack:FlxSliceSprite = new FlxSliceSprite(AssetPaths.spell_back__png, new FlxRect(7, 7, 41, 17), 64, 54);
+        var mapBack:FlxSliceSprite = new FlxSliceSprite("assets/images/spell_back.png", new FlxRect(7, 7, 41, 17), 64, 54);
         mapBack.x = 94;
         mapBack.y = 63;
         add(mapBack);
 
-        var map:FlxSprite = new FlxSprite(mapBack.x + 3, mapBack.y + 3, AssetPaths.map__png);
+        var map:FlxSprite = new FlxSprite(mapBack.x + 3, mapBack.y + 3, GraphicsCache.loadGraphic("assets/images/map.png"));
         add(map);
 
         mapPaths = [];
         mapPoints = [];
 
-        var mP:FlxSprite = new FlxSprite(map.x, map.y, AssetPaths.map_path_0__png);
+        var mP:FlxSprite = new FlxSprite(map.x, map.y, "assets/images/map_path_0.png");
         mapPaths.push(mP);
         mP.alpha = .66;
         mP.kill();
         add(mP);
 
-        mP = new FlxSprite(map.x, map.y, AssetPaths.map_path_1__png);
+        mP = new FlxSprite(map.x, map.y, "assets/images/map_path_1.png");
         mapPaths.push(mP);
         mP.alpha = .66;
         mP.kill();
         add(mP);
 
-        mP = new FlxSprite(map.x, map.y, AssetPaths.map_path_2__png);
+        mP = new FlxSprite(map.x, map.y, "assets/images/map_path_2.png");
         mapPaths.push(mP);
         mP.alpha = .66;
         mP.kill();
         add(mP);
 
-        mP = new FlxSprite(map.x, map.y, AssetPaths.map_path_3__png);
+        mP = new FlxSprite(map.x, map.y, "assets/images/map_path_3.png");
         mapPaths.push(mP);
         mP.alpha = .66;
         mP.kill();
         add(mP);
 
-        mP = new FlxSprite(map.x, map.y, AssetPaths.map_path_4__png);
+        mP = new FlxSprite(map.x, map.y, "assets/images/map_path_4.png");
         mapPaths.push(mP);
         mP.alpha = .66;
         mP.kill();
         add(mP);
 
-        mP = new FlxSprite(map.x, map.y, AssetPaths.map_path_5__png);
+        mP = new FlxSprite(map.x, map.y, "assets/images/map_path_5.png");
         mapPaths.push(mP);
         mP.alpha = .66;
         mP.kill();
         add(mP);
 
-        mP = new FlxSprite(map.x + 13, map.y + 38, AssetPaths.map_node__png);
+        mP = new FlxSprite(map.x + 13, map.y + 38, "assets/images/map_node.png");
         mapPoints.push(mP);
         mP.alpha = .33;
         add(mP);
 
-        mP = new FlxSprite(map.x + 40, map.y + 37, AssetPaths.map_node__png);
+        mP = new FlxSprite(map.x + 40, map.y + 37, "assets/images/map_node.png");
         mapPoints.push(mP);
         mP.alpha = .33;
         add(mP);
 
-        mP = new FlxSprite(map.x + 41, map.y + 27, AssetPaths.map_node__png);
+        mP = new FlxSprite(map.x + 41, map.y + 27, "assets/images/map_node.png");
         mapPoints.push(mP);
         mP.alpha = .33;
         add(mP);
 
-        mP = new FlxSprite(map.x + 21, map.y + 25, AssetPaths.map_node__png);
+        mP = new FlxSprite(map.x + 21, map.y + 25, "assets/images/map_node.png");
         mapPoints.push(mP);
         mP.alpha = .33;
         add(mP);
 
-        mP = new FlxSprite(map.x + 6, map.y + 27, AssetPaths.map_node__png);
+        mP = new FlxSprite(map.x + 6, map.y + 27, "assets/images/map_node.png");
         mapPoints.push(mP);
         mP.alpha = .33;
         add(mP);
 
-        mP = new FlxSprite(map.x + 11, map.y + 8, AssetPaths.map_node__png);
+        mP = new FlxSprite(map.x + 11, map.y + 8, "assets/images/map_node.png");
         mapPoints.push(mP);
         mP.alpha = .33;
         add(mP);
 
-        mP = new FlxSprite(map.x + 2, map.y + 3, AssetPaths.map_node__png);
+        mP = new FlxSprite(map.x + 2, map.y + 3, "assets/images/map_node.png");
         mapPoints.push(mP);
         mP.alpha = .33;
         add(mP);
 
         pauseButton = new FlxSpriteButton(FlxG.width - 12, FlxG.height - 14, null, pauseGame);
-        pauseButton.loadGraphic(AssetPaths.pause_button__png, true, 10, 12);
+        pauseButton.loadGraphic(GraphicsCache.loadGraphic("assets/images/pause_button.png"), true, 10, 12);
         add(pauseButton);
 
         juices = new FlxTypedGroup<Juice>();

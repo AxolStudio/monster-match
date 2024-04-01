@@ -15,7 +15,7 @@ class Meteor extends FlxSprite
     public function new()
     {
         super();
-        loadGraphic(AssetPaths.meteor__png);
+        loadGraphic(GraphicsCache.loadGraphic("assets/images/meteor.png"));
 
         kill();
     }

@@ -29,9 +29,9 @@ class HiScoreState extends FlxSubState
         super(FlxColor.TRANSPARENT);
         ready = false;
         messages = [];
-        font = FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml);
+        font = FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml");
 
-        frame = new FlxSprite(0, 0, AssetPaths.screen_frame__png);
+        frame = new FlxSprite(0, 0, "assets/images/screen_frame.png");
         frame.screenCenter(FlxAxes.XY);
         frame.alpha = 0;
         add(frame);
@@ -47,12 +47,12 @@ class HiScoreState extends FlxSubState
         }
 
         buttonReplay = new FlxSpriteButton(0, 0, null, closeReplay);
-        buttonReplay.loadGraphic(AssetPaths.replay_button__png, true, 36, 12);
+        buttonReplay.loadGraphic(GraphicsCache.loadGraphic("assets/images/replay_button.png"), true, 36, 12);
         buttonReplay.x = frame.x + 2;
         buttonReplay.y = frame.y + frame.height - 2 - buttonReplay.height;
 
         buttonQuit = new FlxSpriteButton(0, 0, null, closeQuit);
-        buttonQuit.loadGraphic(AssetPaths.exit_button__png, true, 36, 12);
+        buttonQuit.loadGraphic(GraphicsCache.loadGraphic("assets/images/exit_button.png"), true, 36, 12);
         buttonQuit.x = frame.x + frame.width - 2 - buttonQuit.width;
         buttonQuit.y = frame.y + frame.height - 2 - buttonQuit.height;
 

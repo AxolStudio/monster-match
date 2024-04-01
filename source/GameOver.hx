@@ -50,7 +50,7 @@ class GameOver extends FlxSubState
 
         ready = false;
 
-        font = FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml);
+        font = FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml");
 
         initVals = [0, 0, 0];
         initVals[0] = getVal(Globals.Save.data.init.charAt(0));
@@ -66,14 +66,14 @@ class GameOver extends FlxSubState
         add(back);
 
         frame = new FlxSprite(0, 0,
-            AssetPaths.screen_frame__png); // FlxSliceSprite(AssetPaths.dark_frame__png, new FlxRect(2, 2, 2, 2), FlxG.width - 8, FlxG.height - 8);
+            "assets/images/screen_frame.png"); // FlxSliceSprite("assets/images/dark_frame.png", new FlxRect(2, 2, 2, 2), FlxG.width - 8, FlxG.height - 8);
         frame.screenCenter(FlxAxes.XY);
         frame.alpha = 0;
         add(frame);
 
         scene = new FlxSprite();
 
-        text = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.fancy_font__png, AssetPaths.fancy_font__xml));
+        text = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/fancy_font.png"), "assets/images/fancy_font.xml"));
         text.text = "";
         text.borderColor = 0xff333333;
         text.borderSize = 1;
@@ -84,7 +84,7 @@ class GameOver extends FlxSubState
         {
             whichText = gameWinText;
 
-            scene.loadGraphic(AssetPaths.victory_scene__png, true, 110, 40);
+            scene.loadGraphic(GraphicsCache.loadGraphic("assets/images/victory_scene.png"), true, 110, 40);
             scene.animation.add("play", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 0], 8, false);
             text.x = 52.5;
             text.fieldWidth = 57;
@@ -92,7 +92,7 @@ class GameOver extends FlxSubState
         else
         {
             whichText = gameOverText;
-            scene.loadGraphic(AssetPaths.game_over_scene__png, true, 110, 40);
+            scene.loadGraphic(GraphicsCache.loadGraphic("assets/images/game_over_scene.png"), true, 110, 40);
             scene.animation.add("play", [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6
             ], 8, false);

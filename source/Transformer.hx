@@ -8,7 +8,7 @@ class Transformer extends FlxSprite
     {
         super(X, Y);
 
-        loadGraphic(AssetPaths.transform__png, true, 8, 8);
+        loadGraphic(GraphicsCache.loadGraphic("assets/images/transform.png"), true, 8, 8);
         animation.add("go", [0, 1, 2], 8, false);
 
         kill();

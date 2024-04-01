@@ -30,7 +30,7 @@ class HeroData
         data = [];
 
         var json:
-            {heroes:Array<Object>} = Json.parse(Assets.getText(AssetPaths.heroes__json));
+            {heroes:Array<Object>} = Json.parse(Assets.getText("assets/data/heroes.json"));
         for (h in json.heroes)
             data.push(new HeroData(Std.parseInt(h.id), Std.parseInt(h.hp), Std.parseInt(h.att), Std.parseInt(h.def), Std.parseInt(h.satt),
                 Std.parseInt(h.sdef)));

@@ -23,7 +23,7 @@ class FloatingNumber extends FlxBitmapText
 
     public function new()
     {
-        super(FlxBitmapFont.fromAngelCode(AssetPaths.tiny_digits__png, AssetPaths.tiny_digits__xml));
+        super(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/tiny_digits.png"), "assets/images/tiny_digits.xml"));
 
         autoSize = false;
         alignment = FlxTextAlign.CENTER;

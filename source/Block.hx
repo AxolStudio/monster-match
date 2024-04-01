@@ -19,7 +19,7 @@ class Block extends FlxSprite
     public function new()
     {
         super();
-        loadGraphic(AssetPaths.monsters__png, true, 8, 8);
+        loadGraphic(GraphicsCache.loadGraphic("assets/images/monsters.png"), true, 8, 8);
     }
 
     private function set_falling(Value:Bool):Bool

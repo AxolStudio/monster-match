@@ -26,7 +26,7 @@ class Environment extends FlxSprite
 
         makeGraphic(60, 16, FlxColor.BLACK, true, "environment");
 
-        master = FlxG.bitmap.add(AssetPaths.environments__png);
+        master = FlxG.bitmap.add(GraphicsCache.loadGraphic("assets/images/environments.png"));
 
         cam = new Rectangle(master.width - 60, 16 * WhichEnv, 60, 16);
     }

@@ -42,7 +42,7 @@ class MonsterData
         data = [];
 
         var json:
-            {monsters:Array<Object>} = Json.parse(Assets.getText(AssetPaths.monsters__json));
+            {monsters:Array<Object>} = Json.parse(Assets.getText("assets/data/monsters.json"));
         for (m in json.monsters)
             data.push(new MonsterData(m.name, Std.parseInt(m.id), Std.parseInt(m.hp), Std.parseInt(m.att), Std.parseInt(m.def), Std.parseInt(m.satt),
                 Std.parseInt(m.sdef), m.color));

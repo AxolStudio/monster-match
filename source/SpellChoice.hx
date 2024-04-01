@@ -59,7 +59,7 @@ class SpellChoice extends FlxSubState
         for (i in 0...3)
         {
             e = new FlxEmitter();
-            e.loadParticles(AssetPaths.sparkles__png, 200, 0, true, false);
+            e.loadParticles("assets/images/sparkles.png", 200, 0, true, false);
             e.x = cards[i].x;
             e.y = cards[i].y + cards[i].height - 10;
             e.height = 5;

@@ -27,25 +27,25 @@ class ProgressMeter extends FlxGroup
         x = X;
         y = Y;
 
-        back = new FlxSliceSprite(AssetPaths.progress_back__png, new FlxRect(0, 0, 1, 6), 46, 6);
+        back = new FlxSliceSprite("assets/images/progress_back.png", new FlxRect(0, 0, 1, 6), 46, 6);
         back.x = x + 7;
         back.y = y + 2;
         add(back);
 
-        cap = new FlxSprite(AssetPaths.progress_cap__png);
+        cap = new FlxSprite("assets/images/progress_cap.png");
         cap.x = back.x + back.width;
         cap.y = back.y;
         add(cap);
 
         door = new FlxSprite();
-        door.loadGraphic(AssetPaths.door_indicator__png, true, 8, 8);
+        door.loadGraphic(GraphicsCache.loadGraphic("assets/images/door_indicator.png"), true, 8, 8);
 
         door.x = back.x - (door.width / 2);
         door.y = back.y + (back.height / 2) - (door.width / 2);
         add(door);
 
         party = new FlxSprite();
-        party.loadGraphic(AssetPaths.party_indicator__png);
+        party.loadGraphic(GraphicsCache.loadGraphic("assets/images/party_indicator.png"));
         party.x = back.x + back.width - (party.width / 2);
         party.y = back.y + (back.height / 2) - (party.height / 2);
         add(party);

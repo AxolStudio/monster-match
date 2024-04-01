@@ -8,7 +8,7 @@ class Pop extends FlxSprite
     {
         super();
 
-        loadGraphic(AssetPaths.pop__png, true, 8, 8);
+        loadGraphic(GraphicsCache.loadGraphic("assets/images/pop.png"), true, 8, 8);
         animation.add("pop", [4, 3, 2, 1, 0], 12, false);
         kill();
     }

@@ -53,7 +53,7 @@ class PauseScreen extends FlxSubState
             infos.push(mI);
         }
 
-        key = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.simple_font__png, AssetPaths.simple_font__xml));
+        key = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml"));
         key.borderStyle = FlxTextBorderStyle.SHADOW;
         key.borderColor = 0xff111111;
         key.borderSize = 1;
@@ -66,11 +66,11 @@ class PauseScreen extends FlxSubState
         add(key);
 
         unpause = new FlxSpriteButton(FlxG.width - 12, FlxG.height - 14, null, resumeGame);
-        unpause.loadGraphic(AssetPaths.pause_button__png, true, 10, 12);
+        unpause.loadGraphic(GraphicsCache.loadGraphic("assets/images/pause_button.png"), true, 10, 12);
         unpause.alpha = 0;
         add(unpause);
 
-        text = new FlxBitmapText(FlxBitmapFont.fromAngelCode(AssetPaths.fancy_font__png, AssetPaths.fancy_font__xml));
+        text = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/fancy_font.png"), "assets/images/fancy_font.xml"));
         text.borderStyle = FlxTextBorderStyle.SHADOW;
         text.borderColor = 0xff111111;
         text.borderSize = 1;
@@ -81,7 +81,7 @@ class PauseScreen extends FlxSubState
         add(text);
 
         quit = new FlxSpriteButton(2, 2, null, quitGame);
-        quit.loadGraphic(AssetPaths.quit_button__png, true, 10, 12);
+        quit.loadGraphic(GraphicsCache.loadGraphic("assets/images/quit_button.png"), true, 10, 12);
         quit.alpha = 0;
         add(quit);
     }

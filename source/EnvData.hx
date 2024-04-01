@@ -24,7 +24,7 @@ class EnvData
         data = [];
 
         var json:
-            {environments:Array<Object>} = Json.parse(Assets.getText(AssetPaths.environments__json));
+            {environments:Array<Object>} = Json.parse(Assets.getText("assets/data/environments.json"));
         for (e in json.environments)
             data.push(new EnvData(e.name, Std.parseInt(e.id), e.monsters));
     }

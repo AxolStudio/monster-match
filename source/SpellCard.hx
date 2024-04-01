@@ -23,7 +23,7 @@ class SpellCard extends FlxGroup
     {
         super();
 
-        back = new FlxSliceSprite(AssetPaths.spell_back__png, new FlxRect(7, 7, 41, 17), 44, 44);
+        back = new FlxSliceSprite("assets/images/spell_back.png", new FlxRect(7, 7, 41, 17), 44, 44);
 
         whichCard = WhichCard;
 
@@ -31,11 +31,11 @@ class SpellCard extends FlxGroup
         switch (whichCard)
         {
             case 0:
-                symbol.loadGraphic(AssetPaths.juggler__png);
+                symbol.loadGraphic(GraphicsCache.loadGraphic("assets/images/juggler.png"));
             case 1:
-                symbol.loadGraphic(AssetPaths.injustice__png);
+                symbol.loadGraphic(GraphicsCache.loadGraphic("assets/images/injustice.png"));
             case 2:
-                symbol.loadGraphic(AssetPaths.striking_balls__png);
+                symbol.loadGraphic(GraphicsCache.loadGraphic("assets/images/striking_balls.png"));
             default:
         }
 

@@ -43,13 +43,13 @@ class HelpState extends FlxState
     {
         ready = false;
 
-        story = new FlxSprite(0, 0, AssetPaths.story__png);
+        story = new FlxSprite(0, 0, GraphicsCache.loadGraphic("assets/images/story.png"));
         add(story);
 
         cauldron = new FlxSprite();
         cauldron.x = 61;
         cauldron.y = 300;
-        cauldron.loadGraphic(AssetPaths.cauldron__png, true, 8, 8);
+        cauldron.loadGraphic(GraphicsCache.loadGraphic("assets/images/cauldron.png"), true, 8, 8);
         cauldron.animation.add("burst", [1, 2, 3, 4, 5, 0], 8, true);
         cauldron.animation.play("burst");
         add(cauldron);
@@ -59,7 +59,7 @@ class HelpState extends FlxState
         add(tube);
 
         demo = new FlxSprite();
-        demo.frames = GraphicsCache.loadGraphicFromAtlas("demo", AssetPaths.demo__png, AssetPaths.demo__xml).atlasFrames;
+        demo.frames = GraphicsCache.loadGraphicFromAtlas("assets/images/demo.png", "assets/images/demo.xml").atlasFrames;
         demo.animation.addByPrefix("demo", "demo_frame_", 8, true);
         demo.animation.play("demo");
         demo.x = 17;
@@ -67,14 +67,14 @@ class HelpState extends FlxState
         add(demo);
 
         attackMonster = new FlxSprite();
-        attackMonster.loadGraphic(AssetPaths.monsters__png, true, 8, 8);
+        attackMonster.loadGraphic(GraphicsCache.loadGraphic("assets/images/monsters.png"), true, 8, 8);
         attackMonster.animation.frameIndex = 8;
         attackMonster.x = 104;
         attackMonster.y = 570;
         add(attackMonster);
 
         attackHero = new FlxSprite();
-        attackHero.loadGraphic(AssetPaths.heroes__png, true, 8, 8);
+        attackHero.loadGraphic(GraphicsCache.loadGraphic("assets/images/heroes.png"), true, 8, 8);
         attackHero.flipX = true;
         attackHero.animation.frameIndex = 1;
         attackHero.x = 112;
@@ -102,22 +102,22 @@ class HelpState extends FlxState
 
         potions = [];
         var p:FlxSprite = new FlxSprite();
-        p.loadGraphic(AssetPaths.monsters__png, true, 8, 8);
+        p.loadGraphic(GraphicsCache.loadGraphic("assets/images/monsters.png"), true, 8, 8);
         add(p);
         potions.push(p);
 
         p = new FlxSprite();
-        p.loadGraphic(AssetPaths.monsters__png, true, 8, 8);
+        p.loadGraphic(GraphicsCache.loadGraphic("assets/images/monsters.png"), true, 8, 8);
         add(p);
         potions.push(p);
 
         p = new FlxSprite();
-        p.loadGraphic(AssetPaths.monsters__png, true, 8, 8);
+        p.loadGraphic(GraphicsCache.loadGraphic("assets/images/monsters.png"), true, 8, 8);
         add(p);
         potions.push(p);
 
         p = new FlxSprite();
-        p.loadGraphic(AssetPaths.monsters__png, true, 8, 8);
+        p.loadGraphic(GraphicsCache.loadGraphic("assets/images/monsters.png"), true, 8, 8);
         add(p);
         potions.push(p);
 
@@ -131,17 +131,17 @@ class HelpState extends FlxState
         potions[3].y = 736;
 
         upButton = new FlxSpriteButton(FlxG.width - 22, FlxG.height - 12, null, clickUp);
-        upButton.loadGraphic(AssetPaths.up_button__png, true, 8, 8);
+        upButton.loadGraphic(GraphicsCache.loadGraphic("assets/images/up_button.png"), true, 8, 8);
         upButton.alpha = .66;
         add(upButton);
 
         downButton = new FlxSpriteButton(FlxG.width - 12, FlxG.height - 12, null, clickDown);
-        downButton.loadGraphic(AssetPaths.down_button__png, true, 8, 8);
+        downButton.loadGraphic(GraphicsCache.loadGraphic("assets/images/down_button.png"), true, 8, 8);
         downButton.alpha = .66;
         add(downButton);
 
         exitButton = new FlxSpriteButton(2, 2, null, clickExit);
-        exitButton.loadGraphic(AssetPaths.close_button__png, true, 8, 8);
+        exitButton.loadGraphic(GraphicsCache.loadGraphic("assets/images/close_button.png"), true, 8, 8);
         exitButton.alpha = .66;
         add(exitButton);
 

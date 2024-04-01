@@ -31,12 +31,12 @@ class TitleState extends FlxState
 
     override public function create():Void
     {
-        Globals.initGame();
+        // Globals.initGame();
 
         Sounds.playMusic("title");
 
         title = new FlxSprite();
-        title.loadGraphic(AssetPaths.title__png);
+        title.loadGraphic(GraphicsCache.loadGraphic("assets/images/title.png"));
         title.screenCenter(FlxAxes.X);
         title.y = FlxG.height - title.height;
         // add(title);
@@ -49,7 +49,7 @@ class TitleState extends FlxState
         add(titleEffect);
 
         logo = new FlxSprite();
-        logo.loadGraphic(AssetPaths.title_logo__png);
+        logo.loadGraphic(GraphicsCache.loadGraphic("assets/images/title_logo.png"));
         logo.screenCenter(FlxAxes.X);
         logo.x = Std.int(logo.x);
         logo.y = 2;
@@ -63,21 +63,21 @@ class TitleState extends FlxState
         add(logoEffect);
 
         buttonPlay = new FlxSpriteButton(0, 0, null, clickPlay); // (0, 0, "PLAY", clickPlay);
-        buttonPlay.loadGraphic(AssetPaths.play_button__png, true, 24, 12);
+        buttonPlay.loadGraphic(GraphicsCache.loadGraphic("assets/images/play_button.png"), true, 24, 12);
         buttonPlay.x = 2;
         buttonPlay.y = FlxG.height - 14;
         buttonPlay.alpha = 0;
         add(buttonPlay);
 
         buttonHelp = new FlxSpriteButton(0, 0, null, clickHelp); // 0, 0, "HOW TO", clickHelp);
-        buttonHelp.loadGraphic(AssetPaths.tut_button__png, true, 10, 12);
+        buttonHelp.loadGraphic(GraphicsCache.loadGraphic("assets/images/tut_button.png"), true, 10, 12);
         buttonHelp.x = buttonPlay.x + buttonPlay.width + 2;
         buttonHelp.y = FlxG.height - 14;
         buttonHelp.alpha = 0;
         add(buttonHelp);
 
         buttonCredits = new FlxSpriteButton(0, 0, null, clickCredits); // 0, 0, "CREDITS", clickCredits);
-        buttonCredits.loadGraphic(AssetPaths.credits_button__png, true, 37, 12);
+        buttonCredits.loadGraphic(GraphicsCache.loadGraphic("assets/images/credits_button.png"), true, 37, 12);
         buttonCredits.x = FlxG.width - buttonCredits.width - 2;
         buttonCredits.y = FlxG.height - 14;
         buttonCredits.alpha = 0;
@@ -116,6 +116,7 @@ class TitleState extends FlxState
                             onComplete: function(_)
                             {
                                 ready = true;
+                                FlxG.mouse.visible = true;
                             }
                         }, function(Value:Float)
                         {

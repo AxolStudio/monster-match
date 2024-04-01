@@ -51,7 +51,8 @@ class Globals
         Counts.init();
 
         FlxG.autoPause = false;
-        FlxG.mouse.load(AssetPaths.cursor__png, 3, 1, 1);
+        GraphicsCache.preloadGraphics();
+        FlxG.mouse.load("assets/images/cursor-3x.png", 1, 1, 1);
         mouseOffScreen(null);
         Sounds.preloadSounds();
 

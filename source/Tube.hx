@@ -40,18 +40,18 @@ class Tube extends FlxGroup
         add(fill);
 
         portrait = new FlxSprite();
-        portrait.loadGraphic(AssetPaths.monsters__png, true, 8, 8);
+        portrait.loadGraphic(GraphicsCache.loadGraphic("assets/images/monsters.png"), true, 8, 8);
         portrait.visible = false;
         add(portrait);
 
         spawn = new FlxSprite();
-        spawn.loadGraphic(AssetPaths.spawn__png, true, 8, 8);
+        spawn.loadGraphic(GraphicsCache.loadGraphic("assets/images/spawn.png"), true, 8, 8);
         spawn.animation.add("spawn", [0, 1, 2, 3, 4, 5, 2, 3, 4, 5, 6, 7, 8, 9, 10], 12, false);
         spawn.kill();
         add(spawn);
 
         tube = new FlxSprite();
-        tube.loadGraphic(AssetPaths.tube__png);
+        tube.loadGraphic(GraphicsCache.loadGraphic("assets/images/tube.png"));
         add(tube);
 
         x = X;

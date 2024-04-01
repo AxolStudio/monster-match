@@ -1,13 +1,15 @@
 package;
 
+
 import flixel.FlxSprite;
 
 class Barrier extends FlxSprite
 {
+
     public function new()
     {
         super();
-        loadGraphic(AssetPaths.barrier__png, true, 6, 16);
+        loadGraphic(GraphicsCache.loadGraphic("assets/images/barrier.png"), true, 6, 16);
         animation.add("hit", [1, 2, 0], 12, false);
         kill();
     }

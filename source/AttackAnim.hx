@@ -1,5 +1,6 @@
 package;
 
+
 import flixel.FlxSprite;
 
 class AttackAnim extends FlxSprite
@@ -8,11 +9,11 @@ class AttackAnim extends FlxSprite
     {
         super();
 
-        loadGraphic(AssetPaths.combat_effects__png, true, 8, 8);
+        loadGraphic(GraphicsCache.loadGraphic("assets/images/combat_effects.png"), true, 8, 8);
         animation.add("physhit", [2, 1, 0, 0], 12, false);
         animation.add("maghit", [5, 4, 3, 3], 12, false);
         animation.add("physblock", [6, 7, 6, 7], 12, false);
-        animation.add("magblock", [9, 10, 11, 12], 12, false);
+        animation.add("magblock", [8, 9, 10, 11], 12, false);
 
         visible = false;
     }

@@ -252,9 +252,9 @@ package;
         middle = new FlxSpriteExt();
         bg = new FlxSpriteExt();
 
-        top.loadGraphic(AssetPaths.ng_medal_popup_A__png, true, 250, 72);
-        middle.loadGraphic(AssetPaths.ng_medal_popup_B__png, true, 250, 72);
-        bg.loadGraphic(AssetPaths.ng_medal_popup_C__png, true, 250, 72);
+        top.loadGraphic(GraphicsCache.loadGraphic("assets/images/ng_medal_popup_A.png"), true, 250, 72);
+        middle.loadGraphic(GraphicsCache.loadGraphic("assets/images/ng_medal_popup_B.png"), true, 250, 72);
+        bg.loadGraphic(GraphicsCache.loadGraphic("assets/images/ng_medal_popup_C.png"), true, 250, 72);
 
         for (sprite in [top, middle, bg])
             sprite.animAddPlay("popup", "0t30,31h36,32t51", 36, false);
@@ -262,7 +262,7 @@ package;
         medal = new FlxSpriteExt(10 * .2, 10 * .2);
         medal.visible = false;
 
-        medal.loadGraphic(AssetPaths.no_medal__png);
+        medal.loadGraphic(GraphicsCache.loadGraphic("assets/images/no_medal.png"));
 
         if (MedalURL != "")
         {
@@ -359,13 +359,13 @@ package;
     {
         if (!SOUND_IN && top.animation.frameIndex >= 5)
         {
-            // oundPlayer.play_sound(AssetPaths.ng_medal_GET__ogg);
+            // oundPlayer.play_sound("assets/images/ng_medal_GET.ogg");
             Sounds.play("ng_medal_GET", .5);
             SOUND_IN = true;
         }
         if (!SOUND_OUT && top.animation.frameIndex >= 47)
         {
-            // SoundPlayer.play_sound(AssetPaths.ng_medal_GOT__ogg);
+            
             Sounds.play("ng_medal_GOT", .5);
             SOUND_OUT = true;
         }

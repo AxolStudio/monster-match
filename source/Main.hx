@@ -12,6 +12,8 @@ class Main extends Sprite
         super();
 
         AxolAPI.firstState = TitleState;
-        addChild(new FlxGame(160, 120, DissolveState, 1, 120, 30));
+        AxolAPI.init = Globals.initGame;
+        
+        addChild(new FlxGame(160, 120, DissolveState, 120, 60, true));
     }
 }

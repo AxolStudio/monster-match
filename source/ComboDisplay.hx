@@ -25,7 +25,7 @@ class ComboDisplay extends FlxBitmapText
 
     public function new(X:Float, Y:Float)
     {
-        super(FlxBitmapFont.fromAngelCode(AssetPaths.large_numbers__png, AssetPaths.large_numbers__xml));
+        super(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/large_numbers.png"), "assets/images/large_numbers.xml"));
 
         x = baseX = X;
         y = baseY = Y;
