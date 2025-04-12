@@ -99,7 +99,10 @@ class GameOver extends FlxSubState
             text.x = 44.5;
             text.fieldWidth = 73;
         }
-
+        scene.animation.onFinish.add((_) ->
+        {
+            ready = true;
+        });
         scene.alpha = 0;
         scene.screenCenter(FlxAxes.X);
         scene.y = frame.y + 2;
@@ -302,7 +305,7 @@ class GameOver extends FlxSubState
     {
         FlxG.camera.flash(FlxColor.WHITE, .1, function()
         {
-            FlxG.switchState(new HiScoreState(Scores, letters[initVals[0]] + letters[initVals[1]] + letters[initVals[2]], score));
+            FlxG.switchState(() -> new HiScoreState(Scores, letters[initVals[0]] + letters[initVals[1]] + letters[initVals[2]], score));
         });
     }
 
@@ -346,15 +349,7 @@ class GameOver extends FlxSubState
                                     new FlxTimer().start(.66, advanceText);
 
                                     scene.animation.play("play");
-                                    scene.animation.finishCallback = function(Anim:String)
-                                    {
-                                        /*FlxTween.tween(buttonQuit, {alpha:1}, .2, {type:FlxTweenType.ONESHOT, ease:FlxEase.sineOut});
-                                            FlxTween.tween(buttonReplay, {alpha:1}, .2, {type:FlxTweenType.ONESHOT, ease:FlxEase.sineOut, onComplete:function(_)
-                                            { */
-                                        ready = true;
-                                        /*}
-                                        });*/
-                                    };
+
                                 }
                             });
                         }

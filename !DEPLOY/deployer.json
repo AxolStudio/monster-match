@@ -1,0 +1,23 @@
+{
+    "projectPath": "P:\\monster-match",
+    "buildOptions": [
+        {
+            "key": "1",
+            "platform": "html5",
+            "destination": "itch",
+            "demo": false,
+            "testing": false,
+            "credentials": "axolstudio/monster-match",
+            "description": "Itch LIVE [HTML5]"
+        },
+        {
+            "key": "2",
+            "platform": "windows",
+            "destination": "itch",
+            "demo": false,
+            "testing": false,
+            "credentials": "axolstudio/monster-match",
+            "description": "Itch LIVE [Win]"
+        }
+    ]
+}

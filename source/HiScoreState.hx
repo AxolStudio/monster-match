@@ -42,8 +42,8 @@ class HiScoreState extends FlxSubState
         var scores:Array<Object> = Scores.data.scores.scores;
         for (s in scores)
         {
-            addLine(StringTools.rpad(s.initials + " ", ".", 20) + " " +
-                StringTools.lpad(s.amount, "0", 6), s.initials == Initials && Std.parseInt(s.amount) == Amount);
+            addLine(StringTools.rpad(Std.string(s.initials) + " ", ".", 20) + " " +
+                StringTools.lpad(Std.string(s.amount), "0", 6), Std.string(s.initials) == Initials && Std.parseInt(s.amount) == Amount);
         }
 
         buttonReplay = new FlxSpriteButton(0, 0, null, closeReplay);
@@ -70,7 +70,7 @@ class HiScoreState extends FlxSubState
         Sounds.play("click", .2);
         FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
         {
-            FlxG.switchState(new PlayState());
+            FlxG.switchState(() -> new PlayState());
         });
     }
 
@@ -82,7 +82,7 @@ class HiScoreState extends FlxSubState
         Sounds.play("click", .2);
         FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
         {
-            FlxG.switchState(new TitleState());
+            FlxG.switchState(() -> new TitleState());
         });
     }
 

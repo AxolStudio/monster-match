@@ -1,10 +1,10 @@
 package;
 
-
 import flixel.FlxSprite;
 
 class Barrier extends FlxSprite
 {
+    public var health:Float = 0;
 
     public function new()
     {
@@ -14,10 +14,17 @@ class Barrier extends FlxSprite
         kill();
     }
 
-    override public function hurt(Damage:Float):Void
+    public function hurt(Damange:Float):Void
     {
-        super.hurt(Damage);
         if (alive)
-            animation.play("hit");
+        {
+            health -= Damange;
+            if (health <= 0)
+            {
+                kill();
+            }
+            else
+                animation.play("hit");
+        }
     }
 }

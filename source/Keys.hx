@@ -1,4 +1,4 @@
 package;
 
-@:build(KeysLoader.build("keys/"))
+@:build(KeysLoader.build("keyfiles/"))
 class Keys {}

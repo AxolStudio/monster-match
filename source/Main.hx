@@ -1,7 +1,8 @@
 package;
 
 import axollib.AxolAPI;
-import axollib.DissolveState;
+import axollib.AxolversaryState;
+// import axollib.DissolveState;
 import flixel.FlxGame;
 import openfl.display.Sprite;
 
@@ -14,6 +15,6 @@ class Main extends Sprite
         AxolAPI.firstState = TitleState;
         AxolAPI.init = Globals.initGame;
         
-        addChild(new FlxGame(160, 120, DissolveState, 120, 60, true));
+        addChild(new FlxGame(160, 120, AxolversaryState, 120, 60, true));
     }
 }

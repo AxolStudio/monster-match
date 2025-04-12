@@ -12,6 +12,7 @@ class Explosion extends FlxSprite
         frames = GraphicsCache.loadGraphicFromAtlas("assets/images/explosion.png", "assets/images/explosion.xml").atlasFrames;
 
         animation.addByPrefix("explosion", "regularExplosion0", 8, false);
+        animation.onFinish.add((_) -> kill());
 
         kill();
     }
@@ -20,9 +21,5 @@ class Explosion extends FlxSprite
     {
         reset(X - 11, Y - 11);
         animation.play("explosion");
-        animation.finishCallback = function(Anim:String)
-        {
-            kill();
-        };
     }
 }

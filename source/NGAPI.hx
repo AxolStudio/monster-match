@@ -1,5 +1,7 @@
 package;
 
+import io.newgrounds.NGLite.LoginOutcome;
+import io.newgrounds.objects.events.Result.PingData;
 #if (html5 && ng)
     import flixel.math.FlxPoint;
     import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
@@ -12,7 +14,6 @@ package;
     import openfl.net.URLRequest;
     import io.newgrounds.objects.Medal;
     import io.newgrounds.crypto.Cipher;
-    import io.newgrounds.crypto.EncryptionFormat;
     import io.newgrounds.NG;
     import flixel.graphics.frames.FlxTileFrames;
     import flixel.system.FlxAssets.FlxGraphicAsset;
@@ -21,7 +22,6 @@ package;
     import openfl.Assets;
     import flixel.util.FlxTimer;
     import io.newgrounds.objects.events.Response;
-    import io.newgrounds.objects.events.Result.PingResult;
     import io.newgrounds.Call;
 
     class NGAPI
@@ -52,7 +52,7 @@ package;
                 NG.core.verbose = false;
     #end
 
-            NG.core.initEncryption(ENCKEY, Cipher.RC4, EncryptionFormat.BASE_64);
+            NG.core.setupEncryption(ENCKEY, AES_128, BASE_64);
 
     #if debug
                 trace(NG.core.attemptingLogin);
@@ -83,7 +83,11 @@ package;
     #if debug
                 trace("request login");
     #end
-            NG.core.requestLogin(onNGLogin.bind(Callback));
+            NG.core.requestLogin(function(outcome:LoginOutcome):Void
+            {
+                if (outcome.match(SUCCESS))
+                    Callback();
+            });
         }
     }
 
@@ -97,7 +101,7 @@ package;
 
         keepAlive = new FlxTimer().start(300, doPing, 1);
 
-        NG.core.requestMedals(() ->
+        NG.core.requestMedals((Err) ->
         {
     #if debug
                 giveMedal(63809);
@@ -109,12 +113,12 @@ package;
 
     private static function doPing(Timer:FlxTimer):Void
     {
-        var call:Call<PingResult> = NG.core.calls.gateway.ping();
-        call.addDataHandler(onPing);
+        var call:Call<PingData> = NG.core.calls.gateway.ping();
+        call.addResponseHandler(onPing);
         call.send();
     }
 
-    private static function onPing(Response:Response<PingResult>):Void
+    private static function onPing(Response:Response<PingData>):Void
     {
         if (Response.success && Response.result.data.success)
         {
@@ -160,7 +164,7 @@ package;
             attemptLogin(submitScore.bind(Score));
             return;
         }
-        NG.core.requestScoreBoards(() ->
+        NG.core.scoreBoards.loadList((_) ->
         {
             NG.core.scoreBoards.get(SCOREBOARD_ID).postScore(Score);
         });
@@ -365,7 +369,6 @@ package;
         }
         if (!SOUND_OUT && top.animation.frameIndex >= 47)
         {
-            
             Sounds.play("ng_medal_GOT", .5);
             SOUND_OUT = true;
         }

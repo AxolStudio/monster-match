@@ -36,7 +36,7 @@ class PauseScreen extends FlxSubState
         ready = false;
 
         back = new FlxSprite();
-        back.makeGraphic(FlxG.width, FlxG.height, 0x66000000);
+        back.makeGraphic(FlxG.width, FlxG.height, 0xaa000000);
         back.alpha = 0;
 
         add(back);

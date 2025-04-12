@@ -47,6 +47,10 @@ class Tube extends FlxGroup
         spawn = new FlxSprite();
         spawn.loadGraphic(GraphicsCache.loadGraphic("assets/images/spawn.png"), true, 8, 8);
         spawn.animation.add("spawn", [0, 1, 2, 3, 4, 5, 2, 3, 4, 5, 6, 7, 8, 9, 10], 12, false);
+        spawn.animation.onFinish.add((_) ->
+        {
+            spawn.kill();
+        });
         spawn.kill();
         add(spawn);
 
@@ -137,9 +141,6 @@ class Tube extends FlxGroup
     {
         spawn.revive();
         spawn.animation.play("spawn", true);
-        spawn.animation.finishCallback = function(Anim:String)
-        {
-            spawn.kill();
-        };
+
     }
 }

@@ -2,7 +2,8 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Monster Match" file="MonsterMatch" main="Main" version="1.0.3" company="Axol Studio, LLC" />
+	<app title="Monster Match" file="MonsterMatch" main="Main" version="1.0.4"
+		company="Axol Studio, LLC" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -80,6 +81,7 @@
 	<haxedef name="FLX_NO_KEYBOARD" if="mobile" />
 	<haxedef name="FLX_NO_TOUCH" if="desktop" />
 	<haxedef name="FLX_NO_GAMEPAD" />
+	<haxedef name="FLX_NO_HEALTH" />
 
 	<!--Disable the Flixel core sound tray-->
 	<!--<haxedef name="FLX_NO_SOUND_TRAY" />-->

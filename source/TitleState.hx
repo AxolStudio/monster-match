@@ -147,9 +147,9 @@ class TitleState extends FlxState
             FlxG.camera.fade(FlxColor.BLACK, .66, false, function()
             {
                 if (!Globals.SeenTut)
-                    FlxG.switchState(new HelpState(true));
+                    FlxG.switchState(() -> new HelpState(true));
                 else
-                    FlxG.switchState(new PlayState());
+                    FlxG.switchState(() -> new PlayState());
             });
         });
     }
@@ -164,7 +164,7 @@ class TitleState extends FlxState
         {
             FlxG.camera.fade(FlxColor.BLACK, .66, false, function()
             {
-                FlxG.switchState(new HelpState());
+                FlxG.switchState(() -> new HelpState());
             });
         });
     }
@@ -179,7 +179,7 @@ class TitleState extends FlxState
         {
             FlxG.camera.fade(FlxColor.BLACK, .66, false, function()
             {
-                FlxG.switchState(new CreditsState());
+                FlxG.switchState(() -> new CreditsState());
             });
         });
     }

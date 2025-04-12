@@ -216,10 +216,10 @@ class HelpState extends FlxState
                 Globals.SeenTut = true;
                 Globals.Save.data.seenTut = true;
                 Globals.Save.flush();
-                FlxG.switchState(new PlayState());
+                FlxG.switchState(() ->new PlayState());
             }
             else
-                FlxG.switchState(new TitleState());
+                FlxG.switchState(() ->new TitleState());
         });
     }
 

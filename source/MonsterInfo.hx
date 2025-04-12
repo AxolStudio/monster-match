@@ -59,7 +59,7 @@ class MonsterInfo extends FlxGroup
         amt = Math.max(1, amt);
         hpBar = new FlxSprite();
         hpBar.makeGraphic(Math.round(amt), 4, FlxColor.GREEN);
-        hpBar.x = hpLabel.x + hpLabel.width;
+        hpBar.x = hpLabel.x + hpLabel.width + 2;
         hpBar.y = hpLabel.y + 2;
 
         attLabel = new FlxBitmapText(FlxBitmapFont.fromAngelCode(GraphicsCache.loadGraphic("assets/images/simple_font.png"), "assets/images/simple_font.xml"));

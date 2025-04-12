@@ -90,7 +90,7 @@ class ConfirmQuit extends FlxSubState
             ease: FlxEase.circIn,
             onComplete: function(_)
             {
-                FlxG.switchState(new TitleState());
+                FlxG.switchState(() -> new TitleState());
             }
         }, function(Value:Float)
         {

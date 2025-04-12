@@ -66,7 +66,7 @@ class CreditsState extends FlxState
         Sounds.play("click", .2);
         FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
         {
-            FlxG.switchState(new TitleState());
+            FlxG.switchState(() ->  new TitleState());
         });
     }
 
