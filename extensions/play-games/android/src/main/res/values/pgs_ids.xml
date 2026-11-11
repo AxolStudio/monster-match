@@ -1,0 +1,17 @@
+<resources>
+    <!-- Fill with the real Play Console export. Empty values deliberately disable live access. -->
+    <string name="pgs_project_id" translatable="false">973143828151</string>
+    <string name="leaderboard_high_scores" translatable="false">CgkIt82Rn6kcEAIQAQ</string>
+    <string name="achievement_gardens" translatable="false">CgkIt82Rn6kcEAIQCg</string>
+    <string name="achievement_dungeons" translatable="false">CgkIt82Rn6kcEAIQAg</string>
+    <string name="achievement_catacomb" translatable="false">CgkIt82Rn6kcEAIQDQ</string>
+    <string name="achievement_viaduct" translatable="false">CgkIt82Rn6kcEAIQCQ</string>
+    <string name="achievement_ruins" translatable="false">CgkIt82Rn6kcEAIQAw</string>
+    <string name="achievement_ramparts" translatable="false">CgkIt82Rn6kcEAIQCA</string>
+    <string name="achievement_sanctum" translatable="false">CgkIt82Rn6kcEAIQBA</string>
+    <string name="achievement_victory" translatable="false">CgkIt82Rn6kcEAIQBg</string>
+    <string name="achievement_drinkme" translatable="false">CgkIt82Rn6kcEAIQCw</string>
+    <string name="achievement_spellshuffle" translatable="false">CgkIt82Rn6kcEAIQBw</string>
+    <string name="achievement_spellpurge" translatable="false">CgkIt82Rn6kcEAIQDA</string>
+    <string name="achievement_spellmeteor" translatable="false">CgkIt82Rn6kcEAIQBQ</string>
+</resources>

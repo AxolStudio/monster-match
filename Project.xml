@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Monster Match" file="MonsterMatch" main="Main" version="1.0.4"
+	<app package="com.axolstudio.monstermatch" title="Monster Match" file="MonsterMatch" main="Main" version="1.0.5" build-number="26"
 		company="Axol Studio, LLC" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
@@ -20,13 +20,25 @@
 	<!--<window borderless="true"/>-->
 
 	<!--HTML5-specific-->
-	<window if="html5" resizable="true" />
+	<window if="html5" width="0" height="0" resizable="true" />
 
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="false" />
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
+	<architecture name="arm64" if="android" />
+	<architecture name="x64" if="android" />
+	<architecture exclude="armv7" if="android" />
+	<config:android minimum-sdk-version="24" target-sdk-version="36" gradle-version="8.11.1" gradle-plugin="8.9.2" if="android" />
+	<!-- Lime 8.3 uses legacy Back events; retain them on Android 16. -->
+	<config:android if="android">
+        <application android:enableOnBackInvokedCallback="false" android:icon="@drawable/monster_launcher" android:roundIcon="@drawable/monster_launcher" />
+		<gradle-properties org.gradle.jvmargs="-Xmx1024m" org.gradle.workers.max="2" org.gradle.daemon="false" />
+	</config:android>
+	<haxeflag name="-dce" value="full" if="android" />
+	<haxeflag name="--macro" value="FullIntro.enable()" if="android || full_intro" />
+	<include path="extensions/play-games/include.xml" if="android" />
 
 	<window allow-high-dpi="true" />
 
@@ -37,6 +49,10 @@
 
 	<set name="BUILD_DIR" value="export" />
 	<classpath name="source" />
+	<classpath name="core" />
+	<classpath name="tests" if="text_regression" />
+	<classpath name="tests" if="counter_regression" />
+	<classpath name="tests" if="bitmap_log_regression" />
 
 	<assets path="assets/images" rename="assets/images" include="*.png|*.xml" embed="true" />
 	<assets path="assets/data" rename="assets/data" include="*.json" embed="true" />
@@ -50,10 +66,10 @@
 	<include path="axollib/include.xml" />
 
 
-	<haxelib name="flixel" />
+	<haxelib name="flixel" version="6.1.2" />
 
 	<!--In case you want to use the addons package-->
-	<haxelib name="flixel-addons" />
+	<haxelib name="flixel-addons" version="4.0.1" />
 
 	<!-- <haxelib name="axollib" /> -->
 
@@ -77,9 +93,7 @@
 	<!--<haxedef name="FLX_NO_NATIVE_CURSOR" />-->
 
 	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
-	<haxedef name="FLX_NO_MOUSE" if="mobile" />
-	<haxedef name="FLX_NO_KEYBOARD" if="mobile" />
-	<haxedef name="FLX_NO_TOUCH" if="desktop" />
+	<!-- Keep touch, mouse, and keyboard available for Android and ChromeOS. -->
 	<haxedef name="FLX_NO_GAMEPAD" />
 	<haxedef name="FLX_NO_HEALTH" />
 
@@ -102,5 +116,5 @@
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 
-	<icon path="assets/icons/icon.png" />
+	<icon path="assets/icons/icon.png" unless="android" />
 </project>

@@ -134,19 +134,19 @@ class SpellChoice extends FlxSubState
         if (ready)
         {
             var over:Int = -1;
-            if (FlxG.mouse.overlaps(cards[0]))
+            if (GamePointer.overlaps(cards[0]))
             {
                 over = 0;
                 if (cards[0].y > (FlxG.height / 2) - 27)
                     cards[0].y -= 1;
             }
-            else if (FlxG.mouse.overlaps(cards[1]))
+            else if (GamePointer.overlaps(cards[1]))
             {
                 over = 1;
                 if (cards[1].y > (FlxG.height / 2) - 27)
                     cards[1].y -= 1;
             }
-            else if (FlxG.mouse.overlaps(cards[2]))
+            else if (GamePointer.overlaps(cards[2]))
             {
                 over = 2;
                 if (cards[2].y > (FlxG.height / 2) - 27)
@@ -168,7 +168,7 @@ class SpellChoice extends FlxSubState
                 }
             }
 
-            if (over != -1 && FlxG.mouse.justReleased)
+            if (over != -1 && GamePointer.releasedOver(cards[over]))
             {
                 ready = false;
                 Sounds.play("spell", .66);

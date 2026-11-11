@@ -1,0 +1,1 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"><item><shape><solid android:color="#171717" /></shape></item><item android:drawable="@drawable/monster_icon_foreground" /></layer-list>

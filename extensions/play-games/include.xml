@@ -1,0 +1,5 @@
+<project>
+    <dependency name="monster-play-games" path="android" />
+    <android extension="com.axolstudio.monstermatch.PlayGamesBridge" />
+    <android extension="com.axolstudio.monstermatch.InitialsInput" />
+</project>

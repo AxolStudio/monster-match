@@ -6,7 +6,7 @@ import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.graphics.frames.FlxBitmapFont;
 import flixel.math.FlxMath;
-import flixel.text.FlxBitmapText;
+import PixelBitmapText as FlxBitmapText;
 import flixel.text.FlxText.FlxTextAlign;
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.tweens.FlxEase;
@@ -34,6 +34,7 @@ class GameOver extends FlxSubState
     public var whichText:String;
     public var tCount:Int = 0;
     public var score:Int = 0;
+    private var reportPlatform:Bool;
 
     public var stats:Array<String> = [];
 
@@ -41,12 +42,18 @@ class GameOver extends FlxSubState
     public var initVals:Array<Int>;
     public var cursor:FlxBitmapText;
     public var sel:Int = 0;
+    #if android
+    private var editingInitials:Bool = false;
+    #end
 
     public var font:FlxBitmapFont;
 
-    public function new(IsWin:Bool, Score:Int)
+    public function new(IsWin:Bool, Score:Int, ReportPlatform:Bool = true)
     {
         super();
+
+        GameEvents.track("game_completed", 1, ReportPlatform);
+        if (IsWin) GameEvents.track("victory", 1, ReportPlatform);
 
         ready = false;
 
@@ -58,6 +65,7 @@ class GameOver extends FlxSubState
         initVals[2] = getVal(Globals.Save.data.init.charAt(2));
 
         score = Score;
+        reportPlatform = ReportPlatform;
 
         back = new FlxSprite();
         back.makeGraphic(FlxG.width, FlxG.height, 0x66000000);
@@ -124,7 +132,7 @@ class GameOver extends FlxSubState
             if (letters[i] == Char)
                 return i;
         }
-        return -1;
+        return 0;
     }
 
     private function advanceText(T:FlxTimer):Void
@@ -221,6 +229,10 @@ class GameOver extends FlxSubState
                 cursor.borderStyle = FlxTextBorderStyle.SHADOW;
                 cursor.x = txtInits[sel].x;
                 add(cursor);
+                #if android
+                add(new ServiceButton(22, FlxG.height - 16, 64, "TYPE INITIALS", editInitials));
+                add(new ServiceButton(90, FlxG.height - 16, 48, "SAVE SCORE", saveInitials));
+                #end
             });
         }
     }
@@ -237,13 +249,60 @@ class GameOver extends FlxSubState
         cursor.x = txtInits[sel].x;
     }
 
+    #if android
+    private function editInitials():Void {
+        if (!ready || editingInitials) return;
+        editingInitials = InitialsKeyboard.open(letters[initVals[0]] + letters[initVals[1]] + letters[initVals[2]]);
+    }
+
+    private function saveInitials():Void {
+        if (!ready || editingInitials) return;
+        ready = false;
+        cursor.visible = false;
+        Sounds.play("match", .5);
+        Globals.Save.data.init = letters[initVals[0]] + letters[initVals[1]] + letters[initVals[2]];
+        submitScore();
+    }
+
+    override public function destroy():Void {
+        InitialsKeyboard.close();
+        super.destroy();
+    }
+    #end
+
     override public function update(elapsed:Float):Void
     {
         super.update(elapsed);
 
-        if (ready)
+        #if android
+        if (editingInitials) {
+            var result = InitialsKeyboard.takeResult();
+            if (result != null) {
+                editingInitials = false;
+                if (StringTools.startsWith(result, "save:")) {
+                    var value = StringTools.rpad(result.substr(5), " ", 3);
+                    for (i in 0...3) initVals[i] = getVal(value.charAt(i));
+                    updateInits();
+                    saveInitials();
+                }
+            }
+            return;
+        }
+        #end
+
+        if (ready && cursor != null)
         {
             cursor.visible = true;
+
+            #if android
+            for (i in 0...txtInits.length)
+            {
+                if (GamePointer.releasedOver(txtInits[i]))
+                {
+                    editInitials();
+                }
+            }
+            #end
 
             if (FlxG.keys.anyJustPressed([DOWN, S]))
             {
@@ -290,7 +349,7 @@ class GameOver extends FlxSubState
                     NGAPI.submitScore(score);
 #end
 
-                    AxolAPI.sendScore(score, letters[initVals[0]] + letters[initVals[1]] + letters[initVals[2]], scoreSent);
+                    submitScore();
                 }
             }
         }
@@ -299,6 +358,20 @@ class GameOver extends FlxSubState
     public function scoreSent(Msg:Object):Void
     {
         scoresGot(Msg);
+    }
+
+    private function submitScore():Void
+    {
+        var initials = letters[initVals[0]] + letters[initVals[1]] + letters[initVals[2]];
+        #if android
+        var rows = LocalScores.insert(Globals.Save.data.localScores, initials, score);
+        Globals.Save.data.localScores = rows;
+        Globals.Save.flush();
+        if (reportPlatform) PlayServices.submitScore(score);
+        scoreSent({data: {scores: {scores: rows}}});
+        #else
+        AxolAPI.sendScore(score, initials, scoreSent);
+        #end
     }
 
     public function scoresGot(Scores:Object):Void

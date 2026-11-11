@@ -1,0 +1,56 @@
+[
+  {
+    "file": "originals/icon-large.png",
+    "source": "Original studio asset archive, imported 2026-11-05; private source link retained separately.",
+    "bytes": 3082,
+    "sha256": "a04e2f31d7c5bba2f5230bb58c16d55a1bef7c637c08fe5fbde182b3bc3941e1"
+  },
+  {
+    "file": "originals/Title screen w Logo.png",
+    "source": "Original studio asset archive, imported 2026-11-05; private source link retained separately.",
+    "bytes": 11630887,
+    "sha256": "6e4f114936bc7e91488786defe134772252a5832092864f2d61dffb7232d3784"
+  },
+  {
+    "file": "originals/Title screen.png",
+    "source": "Original studio asset archive, imported 2026-11-05; private source link retained separately.",
+    "bytes": 11320178,
+    "sha256": "8a0c62d5f33b86b7316a17aae50dd590f715a2ed6c9866f65c299ef049ed31a7"
+  },
+  {
+    "file": "originals/800x600.png",
+    "source": "Original studio asset archive, imported 2026-11-05; private source link retained separately.",
+    "bytes": 592555,
+    "sha256": "4156043ff76eac54917512f58c68d5276e1fd15a808e7d1508a08adcc1ebaf46"
+  },
+  {
+    "file": "screenshots/LExD_4.png",
+    "source": "Original studio asset archive, imported 2026-11-05; private source link retained separately.",
+    "bytes": 16031,
+    "sha256": "2d8fa8ca5af80779cd55b77fe8c110d3d39b5674ad4e5b48660d82366120a0ea"
+  },
+  {
+    "file": "screenshots/VUh4Wd.png",
+    "source": "Original studio asset archive, imported 2026-11-05; private source link retained separately.",
+    "bytes": 18336,
+    "sha256": "94b9f2386fc1df0cc169b5c1949645d72d9cedcf5f012045af1a29b1f5f6c4a8"
+  },
+  {
+    "file": "screenshots/sy_Dsq.png",
+    "source": "Original studio asset archive, imported 2026-11-05; private source link retained separately.",
+    "bytes": 27321,
+    "sha256": "1b9228d21e283d742b4c7c8cbbe8c673cee174dd00c949de97eae3d8ddfcb959"
+  },
+  {
+    "file": "screenshots/oDQYee.png",
+    "source": "Original studio asset archive, imported 2026-11-05; private source link retained separately.",
+    "bytes": 18201,
+    "sha256": "43579cf2d5129d4ad00e761c5a60b334b206d1d6c6ff81cf0a4c3a25f5e105eb"
+  },
+  {
+    "file": "screenshots/BeADFu.png",
+    "source": "Original studio asset archive, imported 2026-11-05; private source link retained separately.",
+    "bytes": 15102,
+    "sha256": "03a5cbbfd86d75fcc1e3d46fddfcdcd83e6de8f57357c849209d7d0940f75de5"
+  }
+]

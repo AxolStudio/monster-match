@@ -17,6 +17,10 @@ class TitleState extends FlxState
     public var buttonPlay:FlxSpriteButton;
     public var buttonHelp:FlxSpriteButton;
     public var buttonCredits:FlxSpriteButton;
+    #if android
+    private var buttonAwards:ServiceButton;
+    private var buttonScores:ServiceButton;
+    #end
 
     public var title:FlxSprite;
     public var logoEffect:FlxEffectSprite;
@@ -82,6 +86,13 @@ class TitleState extends FlxState
         buttonCredits.y = FlxG.height - 14;
         buttonCredits.alpha = 0;
         add(buttonCredits);
+        #if android
+        buttonAwards = new ServiceButton(40, 106, 38, "AWARDS", function() { if (ready) PlayServices.achievements(); });
+        buttonScores = new ServiceButton(80, 106, 38, "SCORES", function() { if (ready) PlayServices.leaderboard(); });
+        buttonAwards.alpha = buttonScores.alpha = 0;
+        add(buttonAwards);
+        add(buttonScores);
+        #end
 
         FlxG.camera.fade(FlxColor.BLACK, 1, true);
         FlxTween.num(0, 1, 1, {type: FlxTweenType.ONESHOT, ease: FlxEase.sineIn, startDelay: .2}, function(Value:Float)
@@ -116,11 +127,16 @@ class TitleState extends FlxState
                             onComplete: function(_)
                             {
                                 ready = true;
+                                #if !android
                                 FlxG.mouse.visible = true;
+                                #end
                             }
                         }, function(Value:Float)
                         {
                             buttonCredits.alpha = buttonHelp.alpha = buttonPlay.alpha = Value;
+                            #if android
+                            buttonAwards.alpha = buttonScores.alpha = Value;
+                            #end
                         });
                     }
                 }, function(Value:Float)
@@ -141,6 +157,7 @@ class TitleState extends FlxState
         if (!ready)
             return;
         ready = false;
+        PlayServices.cancelUi();
         Sounds.play("click", .2);
         FlxG.camera.flash(0x99ffff00, .2, function()
         {
@@ -159,6 +176,7 @@ class TitleState extends FlxState
         if (!ready)
             return;
         ready = false;
+        PlayServices.cancelUi();
         Sounds.play("click", .2);
         FlxG.camera.flash(0x99ffff00, .2, function()
         {
@@ -174,6 +192,7 @@ class TitleState extends FlxState
         if (!ready)
             return;
         ready = false;
+        PlayServices.cancelUi();
         Sounds.play("click", .2);
         FlxG.camera.flash(0x99ffff00, .2, function()
         {
