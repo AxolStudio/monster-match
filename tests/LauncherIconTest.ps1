@@ -1,31 +1,31 @@
-# Verify source fidelity, Android mask safety, and Play listing export.
+# Read-only checks for the historical build26 launcher. No generation or Android build.
 $ErrorActionPreference='Stop'
 Add-Type -AssemblyName System.Drawing
 $root=Split-Path -Parent $PSScriptRoot
 $res=Join-Path $root 'extensions/play-games/android/src/main/res'
 $ns='http://schemas.android.com/apk/res/android'
 $original=[Drawing.Bitmap]::new((Join-Path $root 'assets/icons/icon.png'))
-$listing=[Drawing.Bitmap]::new((Join-Path $root 'artwork/launcher/play-icon-512.png'))
-if($listing.Width -ne 512 -or $listing.Height -ne 512){throw 'Wrong Play dimensions'}
-[xml]$fg=Get-Content (Join-Path $res 'drawable/monster_icon_foreground.xml')
-[xml]$mono=Get-Content (Join-Path $res 'drawable/monster_icon_monochrome.xml')
-$expected=0
-for($y=0;$y -lt 6;$y++){for($x=0;$x -lt 6;$x++){
- $c=$original.GetPixel($x+1,$y+1)
- if($c.ToArgb() -eq [Drawing.Color]::Black.ToArgb()){continue}
- $expected++
- if($listing.GetPixel(64+$x*64+32,64+$y*64+32).ToArgb() -ne $c.ToArgb()){throw 'Source color changed'}
-}}
-if(@($mono.vector.path).Count -ne $expected -or $expected -ge 36){throw 'Themed mask includes backdrop'}
-$index=0
-foreach($p in $fg.vector.path){
- $d=$p.GetAttribute('pathData',$ns)
- if($d -notmatch '^M([\d.]+),([\d.]+) h([\d.]+) v'){throw 'Unexpected vector path'}
- $x=[double]$Matches[1];$y=[double]$Matches[2];$s=[double]$Matches[3]
- foreach($dx in @(0,$s)){foreach($dy in @(0,$s)){if([Math]::Pow($x+$dx-54,2)+[Math]::Pow($y+$dy-54,2) -gt 1089){throw 'Outside guaranteed safe circle'}}}
- if($mono.vector.path[$index].GetAttribute('pathData',$ns) -ne $d){throw 'Mask geometry mismatch'}
- $index++
-}
-for($y=0;$y -lt 512;$y++){for($x=0;$x -lt 512;$x++){if($listing.GetPixel($x,$y).A -ne 255){throw 'Listing is not opaque'}}}
-$listing.Dispose();$original.Dispose()
-Write-Output "PASS: $expected original colored pixels, unchanged colors, non-square themed mask, safe circle, opaque 512px listing."
+try {
+ if($original.Width -ne 8 -or $original.Height -ne 8){throw 'Expected original 8x8 source'}
+ [xml]$fg=Get-Content (Join-Path $res 'drawable/monster_icon_foreground.xml')
+ [xml]$mono=Get-Content (Join-Path $res 'drawable/monster_icon_monochrome.xml')
+ if(@($fg.vector.path).Count -ne 64 -or @($mono.vector.path).Count -ne 64){throw 'Historical build26 requires all 64 framed pixels'}
+ foreach($vector in @($fg.vector,$mono.vector)) {
+  foreach($attr in @('width','height')) { if($vector.GetAttribute($attr,$ns) -ne '108dp'){throw 'Wrong vector dimensions'} }
+  foreach($attr in @('viewportWidth','viewportHeight')) { if($vector.GetAttribute($attr,$ns) -ne '108'){throw 'Wrong viewport'} }
+ }
+ for($y=0;$y -lt 8;$y++){for($x=0;$x -lt 8;$x++){
+  $i=$y*8+$x; $px=34+$x*5; $py=34+$y*5
+  $expected="M$px,$py h5 v5 h-5 z"
+  $color='#{0:X8}' -f $original.GetPixel($x,$y).ToArgb()
+  if($fg.vector.path[$i].GetAttribute('fillColor',$ns) -ne $color){throw 'Historical source color changed'}
+  if($mono.vector.path[$i].GetAttribute('fillColor',$ns) -ne '#FFFFFFFF'){throw 'Monochrome color changed'}
+  foreach($vector in @($fg.vector,$mono.vector)) {
+   if($vector.path[$i].GetAttribute('pathData',$ns) -ne $expected){throw 'Historical framed geometry changed'}
+  }
+  foreach($dx in @(0,5)){foreach($dy in @(0,5)){
+   if([Math]::Pow($px+$dx-54,2)+[Math]::Pow($py+$dy-54,2) -gt 1089){throw 'Outside guaranteed safe circle'}
+  }}
+ }}
+} finally {$original.Dispose()}
+Write-Output 'PASS: historical build26 full 8x8 frame, 64 exact colors/paths, monochrome geometry, and safe circle. Listing references are intentionally excluded.'
