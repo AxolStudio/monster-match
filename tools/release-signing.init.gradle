@@ -1,0 +1,16 @@
+// Secrets come only from the short-lived build process, never project properties.
+gradle.beforeProject { target ->
+    target.plugins.withId('com.android.application') {
+        // Configure before Lime's applicationVariants block finalizes signing.
+            def keyPath = System.getenv('MM_UPLOAD_KEYSTORE')
+            def password = System.getenv('MM_UPLOAD_PASSWORD')
+            if (!keyPath || !password) throw new GradleException('Protected upload-signing configuration is missing.')
+            def signing = target.android.signingConfigs.maybeCreate('release')
+            signing.storeFile = new File(keyPath)
+            signing.storeType = 'PKCS12'
+            signing.storePassword = password
+            signing.keyAlias = 'monster-match-upload'
+            signing.keyPassword = password
+            target.android.buildTypes.release.signingConfig = signing
+    }
+}

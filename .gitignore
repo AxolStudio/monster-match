@@ -1,2 +1,13 @@
 build-and-push.bat
 export/
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.dpapi
+signing.properties
+
+# Local validation outputs and caches
+deliverables/
+__pycache__/
+*.py[cod]

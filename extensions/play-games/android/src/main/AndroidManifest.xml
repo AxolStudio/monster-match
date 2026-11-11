@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <application android:name="com.axolstudio.monstermatch.PlayGamesApplication">
+        <!-- Initialize in Application.onCreate only when genuine Console configuration is present. -->
+        <provider android:name="com.google.android.gms.games.provider.PlayGamesInitProvider" tools:node="remove" />
+        <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/pgs_project_id" />
+    </application>
+</manifest>

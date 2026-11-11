@@ -1,0 +1,74 @@
+[
+  {
+    "medal": 63802,
+    "key": "gardens",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63802_gardens.png",
+    "sha256": "CF6B27D5F11C5CFAFF9A9F4259C294DFB3A457E4BC80FE525FC18B4C98F6672F"
+  },
+  {
+    "medal": 63803,
+    "key": "dungeons",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63803_dungeons.png",
+    "sha256": "E6499ADBC55F540303627C1D771F37114103E8BB143FE8FC334144F3A20A30DC"
+  },
+  {
+    "medal": 63804,
+    "key": "catacomb",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63804_catacomb.png",
+    "sha256": "D8A557A355E7E951644EF411120DA0B6EEBF27723D64DBAEDBFAA5E1EF0E25B8"
+  },
+  {
+    "medal": 63805,
+    "key": "viaduct",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63805_viaduct.png",
+    "sha256": "FF5D28AEC98E730C65E82E61DE79B40779D80EAA68C2EFD8C830E388CE0267F6"
+  },
+  {
+    "medal": 63806,
+    "key": "ruins",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63806_ruins.png",
+    "sha256": "3E324EE2D597C17B43590BE421850D45FDB5B8BA28823FF27BE49843386F3E68"
+  },
+  {
+    "medal": 63807,
+    "key": "ramparts",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63807_ramparts.png",
+    "sha256": "E38F8510D68DDD9C507EEC30EA36A1249F2B4C3ACE0A2156A1068349832DC66B"
+  },
+  {
+    "medal": 63808,
+    "key": "sanctum",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63808_sanctum.png",
+    "sha256": "5974B1018F2AB204A5AD2F14987F8361D5A8646D26DD8A0D0E7833630A1084B7"
+  },
+  {
+    "medal": 63809,
+    "key": "victory",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63809_victory.png",
+    "sha256": "807DC0E816F8A605C649425B0F804299DA03EDE09FD767BEFBC13587B1981C72"
+  },
+  {
+    "medal": 63810,
+    "key": "drinkme",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63810_drinkme.png",
+    "sha256": "B92CD3E6C69D012938BAAE3E881B9E468D76AB60B6553C159EEDDAE6ABCA4D60"
+  },
+  {
+    "medal": 63811,
+    "key": "spellshuffle",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63811_spellshuffle.png",
+    "sha256": "3E4C0717BA5BF3D6AF13A34A57DC53642552F2A6FA9AEB5D7CA56360362F75FE"
+  },
+  {
+    "medal": 63812,
+    "key": "spellpurge",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63812_spellpurge.png",
+    "sha256": "7D4F1E610EA04E7F195741540355FE1E420839E1B774F3EBA48E05AC4D23C735"
+  },
+  {
+    "medal": 63813,
+    "key": "spellmeteor",
+    "source": "https://apifiles.ngfiles.com/medals/52000/52352/63813_spellmeteor.png",
+    "sha256": "70931C87712A59C1826783663EAAE187FECD67C6429732D636A57A7F39ED76AF"
+  }
+]

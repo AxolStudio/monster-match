@@ -1,0 +1,29 @@
+Monster Match 1.0.5 (26) - Play Games authentication diagnostic test
+
+Historical November 7 diagnostic report. Current integration checks are in docs/ANDROID-INTEGRATION.md. No historical signing or native-build claim below is a fresh validation of this snapshot.
+
+Changes
+- Initialize the configured Play Games SDK from Application.onCreate, before game Activity startup.
+- Explicit Awards/Scores requests can retry interactive sign-in after a failed authentication check.
+- Retry is blocked after Home, cancellation, replacement requests or stale Activity callbacks.
+- Failures show a fixed stage and numeric SDK status, or UNKNOWN when Google supplied no numeric ApiException status. No account names, tokens or raw exception messages are logged/displayed.
+- Awards/Scores remain visible. While a request is pending, their current Connecting message remains; after a failure they can be tapped again. Startup failures remain nonblocking.
+- Synchronous authentication dispatch failures also clear connecting state.
+
+Not yet established
+The original live failure has not been reproduced against Google. This may still require correcting the Play App Signing OAuth fingerprint or PGS tester settings. New initialization follows official documentation but is not proven to be the original cause.
+
+Distribution and testing
+Use the AAB for a new release in the existing Google Play testing track. It is upload-key signed; Google will apply the store signing certificate. This work has not uploaded or published any Play release.
+Do not uninstall or clear data to test. The separately supplied upload-key-signed APK may not update a Play-installed copy because their certificates can differ.
+After the Play update reaches the phone/Chromebook, confirm version 1.0.5, fully close/reopen the game, then try Awards and Scores. If they fail, send the short stage/code shown. Also check cancel/retry, Home/return and ordinary offline gameplay. Do not interpret UNKNOWN as a specific Google status code.
+
+Verification
+Five pure-Java test mains and four Haxe logic suites passed, plus Play Games configuration gate tests. A cancellation regression was reproduced failing under the old foreground-only policy and passing with the UI-ticket guard. Independent review found no remaining important issue in the targeted source after that fix.
+Final Android compilation, signatures, manifest/resources and archive alignment are verified separately in the delivery report. No live phone/Chromebook authentication, account switch, cancellation or native gameplay smoke test was performed in this task, to avoid disturbing the active Fish and Chips environment.
+All four native gameplay libraries are byte-identical to the previous build. Changes are isolated; original source and active build were not modified.
+
+Official references
+https://developer.android.com/games/pgs/android/android-signin
+https://developers.google.com/android/reference/com/google/android/gms/games/PlayGamesSdk
+https://developer.android.com/games/pgs/android/troubleshooting

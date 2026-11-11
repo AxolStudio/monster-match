@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.graphics.frames.FlxBitmapFont;
-import flixel.text.FlxBitmapText;
+import PixelBitmapText as FlxBitmapText;
 import flixel.text.FlxText.FlxTextAlign;
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.tweens.FlxEase;
@@ -117,7 +117,7 @@ class PauseScreen extends FlxSubState
         super.update(elapsed);
         if (!ready)
             return;
-        if (FlxG.keys.anyJustReleased([ESCAPE, P]))
+        if (GamePointer.pauseReleased())
             resumeGame();
     }
 

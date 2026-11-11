@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 import flixel.graphics.frames.FlxBitmapFont;
 import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
-import flixel.text.FlxBitmapText;
+import PixelBitmapText as FlxBitmapText;
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.util.FlxColor;
 

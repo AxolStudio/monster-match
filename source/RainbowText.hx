@@ -2,7 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.graphics.frames.FlxBitmapFont;
-import flixel.text.FlxBitmapText;
+import PixelBitmapText as FlxBitmapText;
 import flixel.util.FlxColor;
 
 class RainbowText extends FlxBitmapText

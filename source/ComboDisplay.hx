@@ -2,7 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.graphics.frames.FlxBitmapFont;
-import flixel.text.FlxBitmapText;
+import PixelBitmapText as FlxBitmapText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;

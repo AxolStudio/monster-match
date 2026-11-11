@@ -1,0 +1,10 @@
+<resources>
+    <!-- Fill legacy Events IDs from Console. Game Stats uses the named schema in the setup pack. -->
+    <string name="event_game_started" translatable="false"></string>
+    <string name="event_monster_summoned" translatable="false"></string>
+    <string name="event_hero_defeated" translatable="false"></string>
+    <string name="event_spell_cast" translatable="false"></string>
+    <string name="event_game_completed" translatable="false"></string>
+    <string name="event_victory" translatable="false"></string>
+    <string name="game_stats_enabled" translatable="false">true</string>
+</resources>

@@ -9,7 +9,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.text.FlxBitmapText;
+import PixelBitmapText as FlxBitmapText;
 import flixel.text.FlxText.FlxTextAlign;
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.tile.FlxTileblock;
@@ -131,6 +131,11 @@ class PlayState extends FlxState
     public var heroCounter:FlxBitmapText;
 
     public var ready:Bool = false;
+    private var platformReporting:Bool = true;
+
+    private function reportAchievement(medal:Int):Void {
+        if (platformReporting) PlayServices.unlockMedal(medal);
+    }
 
     public var lastStep:Int = -1;
 
@@ -142,6 +147,8 @@ class PlayState extends FlxState
 
     override public function create():Void
     {
+        PlayServices.beginRun();
+        GameEvents.track("game_started", 1, platformReporting);
         ready = false;
 
         Counts.clear();
@@ -205,6 +212,7 @@ class PlayState extends FlxState
     public function returnFromSpellChoice(Selection:Int):Void
     {
         Counts.add("spells_cast", 1);
+        GameEvents.track("spell_cast", 1, platformReporting);
 
         switch (Selection)
         {
@@ -229,6 +237,9 @@ class PlayState extends FlxState
 
     private function shuffleMonsters():Void
     {
+#if android
+        reportAchievement(63811);
+#end
 #if ng
         NGAPI.giveMedal(63811);
 #end
@@ -294,6 +305,9 @@ class PlayState extends FlxState
 
     private function removeMinority():Void
     {
+#if android
+        reportAchievement(63812);
+#end
 #if ng
         NGAPI.giveMedal(63812);
 #end
@@ -374,6 +388,9 @@ class PlayState extends FlxState
 
     private function meteors():Void
     {
+#if android
+        reportAchievement(63813);
+#end
 #if ng
         NGAPI.giveMedal(63813);
 #end
@@ -643,7 +660,8 @@ class PlayState extends FlxState
         heroCounter.borderSize = 1;
         heroCounter.text = "*20";
         heroCounter.x = backdrop.x + backdrop.width - 31;
-        heroCounter.y = backdrop.y + backdrop.height - heroCounter.height + 1;
+        // Keep the outlined digits inside the battle scene, above the zone title.
+        heroCounter.y = backdrop.y + backdrop.height - heroCounter.height - 2;
         heroCounter.alpha = 0;
         add(heroCounter);
 
@@ -1078,10 +1096,13 @@ class PlayState extends FlxState
         {
             // that was the last hero! VICTORY!
             score += 10000;
+#if android
+            reportAchievement(63809);
+#end
 #if ng
             NGAPI.giveMedal(63809);
 #end
-            openSubState(new GameOver(true, score));
+            openSubState(new GameOver(true, score, platformReporting));
         }
         else
         {
@@ -1113,6 +1134,9 @@ class PlayState extends FlxState
     {
         Sounds.play("finished_area", .66);
 
+#if android
+        reportAchievement(63802 + currentEnv);
+#end
 #if ng
         NGAPI.giveMedal(63802 + currentEnv);
 #end
@@ -1120,7 +1144,7 @@ class PlayState extends FlxState
         if (currentEnv == EnvData.count() - 1)
         {
             // we just finished the final environment!!! GAME OVER!
-            openSubState(new GameOver(false, score));
+            openSubState(new GameOver(false, score, platformReporting));
         }
         else
         {
@@ -1487,6 +1511,7 @@ class PlayState extends FlxState
                                     // KILL THE HERO!
                                     giveScore(HeroData.getFromID(currentHero).hp * 100);
                                     Counts.add("heroes_defeated", 1);
+                                    GameEvents.track("hero_defeated", 1, platformReporting);
                                     Sounds.play("death");
                                     FlxTween.tween(heroCounter, {alpha: 0}, .2, {type: FlxTweenType.ONESHOT, ease: FlxEase.circOut});
                                     showHeroSkull();
@@ -1601,6 +1626,13 @@ class PlayState extends FlxState
         }));
     }
 
+    override public function onFocusLost():Void
+    {
+        super.onFocusLost();
+        if (subState == null) pauseGame();
+        Globals.Save.flush();
+    }
+
     override public function update(elapsed:Float):Void
     {
         super.update(elapsed);
@@ -1610,7 +1642,7 @@ class PlayState extends FlxState
 
         selector.visible = false;
 
-        if (FlxG.keys.anyJustReleased([ESCAPE, P]))
+        if (GamePointer.pauseReleased())
         {
             Sounds.play("click", .2);
             pauseGame();
@@ -1620,7 +1652,22 @@ class PlayState extends FlxState
 #if debug
         if (FlxG.keys.anyJustReleased([F5]))
         {
-            openSubState(new GameOver(true, score));
+            platformReporting = false;
+            openSubState(new GameOver(true, score, false));
+            return;
+        }
+        // Native smoke-test shortcuts; excluded from release builds.
+        if (FlxG.keys.anyJustReleased([F6]) && !swapping && !castingSpell && !changingEnv)
+        {
+            platformReporting = false;
+            castingSpell = true;
+            openSubState(new SpellChoice(returnFromSpellChoice));
+            return;
+        }
+        if (FlxG.keys.anyJustReleased([F7]))
+        {
+            platformReporting = false;
+            openSubState(new GameOver(false, score, false));
             return;
         }
 #end
@@ -1655,7 +1702,7 @@ class PlayState extends FlxState
 
         for (b in blocks)
         {
-            if (FlxG.mouse.overlaps(b) && b.alive && b.exists)
+            if (GamePointer.overlaps(b) && b.alive && b.exists)
             {
                 selector.visible = true;
                 selector.x = b.x - 1;
@@ -1667,7 +1714,7 @@ class PlayState extends FlxState
 
         if (selector.visible)
         {
-            if (FlxG.mouse.justReleased)
+            if (GamePointer.releasedOver(blocks.members[overlappingBlock]))
             {
                 Sounds.play("click", .2);
 
@@ -1818,6 +1865,7 @@ class PlayState extends FlxState
 
                 whichT.showSpawn();
                 Counts.add("monsters_spawned", 1);
+                GameEvents.track("monster_summoned", 1, platformReporting);
                 Sounds.play("spawn");
             }
             else
@@ -2068,6 +2116,9 @@ class PlayState extends FlxState
                             b.isPotion = true;
                             b.scale.set(1, 1);
                             b.alpha = 1;
+#if android
+                            reportAchievement(63810);
+#end
 #if ng
                             NGAPI.giveMedal(63810);
 #end

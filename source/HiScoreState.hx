@@ -4,7 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.graphics.frames.FlxBitmapFont;
-import flixel.text.FlxBitmapText;
+import PixelBitmapText as FlxBitmapText;
 import flixel.text.FlxText.FlxTextAlign;
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.tweens.FlxEase;
@@ -23,6 +23,9 @@ class HiScoreState extends FlxSubState
 
     public var buttonReplay:FlxSpriteButton;
     public var buttonQuit:FlxSpriteButton;
+    #if android
+    private var buttonFriends:ServiceButton;
+    #end
 
     public function new(Scores:Object, ?Initials:String = "$", ?Amount:Int = -1)
     {
@@ -36,14 +39,18 @@ class HiScoreState extends FlxSubState
         frame.alpha = 0;
         add(frame);
 
+        #if android
+        addLine("Local Hi Scores");
+        #else
         addLine("Hi Scores");
+        #end
         addLine("");
 
         var scores:Array<Object> = Scores.data.scores.scores;
         for (s in scores)
         {
             addLine(StringTools.rpad(Std.string(s.initials) + " ", ".", 20) + " " +
-                StringTools.lpad(Std.string(s.amount), "0", 6), Std.string(s.initials) == Initials && Std.parseInt(s.amount) == Amount);
+                StringTools.lpad(Std.string(s.amount), "0", 6), Std.string(s.initials) == Initials && Std.parseInt(Std.string(s.amount)) == Amount);
         }
 
         buttonReplay = new FlxSpriteButton(0, 0, null, closeReplay);
@@ -60,6 +67,13 @@ class HiScoreState extends FlxSubState
 
         add(buttonReplay);
         add(buttonQuit);
+        #if android
+        buttonFriends = new ServiceButton(54, buttonQuit.y, 52, "FRIENDS", function() {
+            if (ready) PlayServices.friends();
+        });
+        buttonFriends.alpha = 0;
+        add(buttonFriends);
+        #end
     }
 
     private function closeReplay():Void
@@ -67,6 +81,7 @@ class HiScoreState extends FlxSubState
         if (!ready)
             return;
         ready = false;
+        PlayServices.cancelUi();
         Sounds.play("click", .2);
         FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
         {
@@ -79,6 +94,7 @@ class HiScoreState extends FlxSubState
         if (!ready)
             return;
         ready = false;
+        PlayServices.cancelUi();
         Sounds.play("click", .2);
         FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
         {
@@ -109,6 +125,9 @@ class HiScoreState extends FlxSubState
         }, function(Value:Float)
         {
             buttonQuit.alpha = buttonReplay.alpha = Value;
+            #if android
+            buttonFriends.alpha = Value;
+            #end
         });
 
         super.create();
