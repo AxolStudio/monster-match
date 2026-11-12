@@ -110,8 +110,9 @@ private class MonsterSmokeDriver extends FlxBasic {
     case 8:
      var p=play();if(p.desktopCursor.column==1){require(p.selectedBlock==selected.ID,"navigation keeps selected origin");pulse(ENTER,A);phase=9;}
     case 9:
-     var p=play();if(p.swapping&&p.selectedBlock==-1){
-      require(selected.x!=selectedX,"real swap tween moved selected block");pass("adjacent board accept enters real swap and moves object");
+     var p=play();if(p.swapping&&p.selectedBlock==-1&&selected.x!=selectedX){
+      // doSwap marks busy immediately; its tween advances on a later manager tick.
+      pass("adjacent board accept enters real swap and moves object");
       pulse(P,START);phase=90;
      }
     case 90:
