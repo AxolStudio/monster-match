@@ -26,6 +26,10 @@ using axollib.TitleCase;
 
 class PlayState extends FlxState
 {
+    #if desktop
+    var desktopCursor = new DesktopBoardCursor();
+    var desktopCursorActive = true;
+    #end
     public static var SPAWNX:Int = 8;
     public static var SPAWNY:Int = 99;
 
@@ -1633,16 +1637,43 @@ class PlayState extends FlxState
         Globals.Save.flush();
     }
 
+    #if desktop
+    override public function openSubState(state:flixel.FlxSubState):Void {
+        desktopCursor.reset();
+        super.openSubState(state);
+    }
+    function desktopLiveBlock(id:Int):Block {
+        for(block in blocks)if(block.ID==id&&block.alive&&block.exists&&!block.falling&&!block.shifting&&!block.isMatched)return block;
+        return null;
+    }
+    #end
     override public function update(elapsed:Float):Void
     {
         super.update(elapsed);
+        #if desktop
+        if(subState!=null){desktopCursor.reset();return;}
+        #end
 
         if (!ready)
             return;
 
         selector.visible = false;
 
+        #if desktop
+        var desktopFrame=DesktopInput.sample(elapsed);
+        var desktopAccept=false;
+        if(changingEnv||swapping||castingSpell)desktopCursor.reset();
+        else desktopAccept=desktopCursor.update(desktopFrame);
+        if(desktopFrame.dx!=0||desktopFrame.dy!=0||desktopFrame.accept)desktopCursorActive=true;
+        #if FLX_MOUSE
+        if(FlxG.mouse.deltaX!=0||FlxG.mouse.deltaY!=0||FlxG.mouse.justReleased)desktopCursorActive=false;
+        #end
+        if(desktopCursor.armed&&desktopFrame.back&&selectedBlock!=-1){
+            selectedBlock=-1;selected.visible=false;desktopAccept=false;
+        } else if(desktopCursor.armed&&(desktopFrame.pause||desktopFrame.back))
+        #else
         if (GamePointer.pauseReleased())
+        #end
         {
             Sounds.play("click", .2);
             pauseGame();
@@ -1700,6 +1731,19 @@ class PlayState extends FlxState
             return;
         }
 
+        #if desktop
+        if(desktopCursorActive){
+            selector.visible=true;selector.color=0xffffdd66;
+            selector.x=desktopCursor.screenX(SPAWNX)-1;selector.y=desktopCursor.screenY(SPAWNY)-1;
+            var target=findBlock(desktopCursor.screenX(SPAWNX),desktopCursor.screenY(SPAWNY));
+            if(desktopAccept&&target!=null&&desktopLiveBlock(target.ID)!=null){
+                Sounds.play("click",.2);
+                if(desktopLiveBlock(selectedBlock)==null){selectedBlock=-1;selected.visible=false;}
+                if(selectedBlock==-1||!trySwap(selectedBlock,target.ID))selectBlock(target.ID);
+            }
+        }else{
+            selector.color=0xffffffff;
+        #end
         for (b in blocks)
         {
             if (GamePointer.overlaps(b) && b.alive && b.exists)
@@ -1732,6 +1776,9 @@ class PlayState extends FlxState
             }
         }
 
+        #if desktop
+        }
+        #end
         if (swapping)
             return;
 

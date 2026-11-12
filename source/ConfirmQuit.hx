@@ -14,6 +14,9 @@ import flixel.util.FlxAxes;
 
 class ConfirmQuit extends FlxSubState
 {
+    #if desktop
+    var desktopFocus=new DesktopFocus(2,1);
+    #end
     public var quitButton:FlxSpriteButton;
     public var resumeButton:FlxSpriteButton;
 
@@ -116,4 +119,15 @@ class ConfirmQuit extends FlxSubState
             back.alpha = quitButton.alpha = resumeButton.alpha = quitText.alpha = Value;
         });
     }
+    #if desktop
+    override public function update(elapsed:Float):Void {
+        super.update(elapsed);
+        if(!ready||subState!=null)return;
+        var frame=DesktopInput.sample(elapsed);
+        var accept=desktopFocus.update(frame);
+        desktopFocus.paint([quitButton,resumeButton]);
+        if(desktopFocus.armed&&frame.back){clickResume();return;}
+        if(accept){if(desktopFocus.index==0)clickQuit();else clickResume();}
+    }
+    #end
 }

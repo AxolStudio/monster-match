@@ -24,6 +24,10 @@ class GameEvents {
         #end
     }
     public static function track(name:String, amount:Int = 1, enabled:Bool = true):Void {
+        #if (desktop && !arcade_regression && !debug)
+        if (!enabled || !GameEventCatalog.accepts(name, amount)) return;
+        DesktopOnline.sendEvent(name, amount);
+        #end
         #if (android && !debug)
         if (!enabled || !GameEventCatalog.accepts(name, amount)) return;
         try { if (AxolAPI.initialized) AxolAPI.sendEvent(name, amount); } catch (_:Dynamic) {}

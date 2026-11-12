@@ -27,8 +27,10 @@ class Main extends Sprite
     {
         super();
 
+        #if !desktop
         AxolAPI.firstState = TitleState;
         AxolAPI.init = Globals.initGame;
+        #end
         
         wallpaper = new Shape();
         addChild(wallpaper);
@@ -38,6 +40,8 @@ class Main extends Sprite
         addChild(new FlxGame(160, 120, CounterLayoutRegressionState, 120, 60, true));
         #elseif text_regression
         addChild(new FlxGame(160, 120, BitmapTextRegressionState, 120, 60, true));
+        #elseif desktop
+        addChild(new FlxGame(160, 120, DesktopBoot, 120, 60, true, true));
         #elseif (android || mobile_intro)
         var introStage = openfl.Lib.current.stage;
         addChild(new FlxGame(Std.int(Math.max(160, introStage.stageWidth)), Std.int(Math.max(120, introStage.stageHeight)), mobileintro.MobileIntroState, 120, 60, true));

@@ -12,6 +12,8 @@ class Globals
 {
     #if android
     static public var AXOL_KEY:String = "";
+    #elseif desktop
+    static public var AXOL_KEY:String = DesktopOnlineConfig.gameKey();
     #else
     static public var AXOL_KEY:String = Keys.keys.get("axolapi");
     #end
@@ -28,7 +30,7 @@ class Globals
             return;
         gameInitialized = true;
 
-        #if !android
+        #if (!android && !desktop)
         AxolAPI.initialize(AXOL_KEY);
         #end
 
@@ -38,7 +40,17 @@ class Globals
 #end
 
         Save = new FlxSave();
+        #if desktop
+        var storageReady=false;
+        #if arcade_regression
+        try storageReady=Save.bind("MonsterMatch-arcade-test-"+Sys.getEnv("MONSTER_TEST_DEVICE"),"axolstudio-tests") catch(_:Dynamic) {}
+        Save.data.seenTut=false;Save.data.init="   ";Save.data.localScores=[];
+        #else
+        try storageReady=Save.bind("MonsterMatch-userData") catch(_:Dynamic) {}
+        #end
+        #else
         Save.bind("MonsterMatch-userData");
+        #end
         var playerID:String;
         if (Save.data.guid == null || Save.data.guid == "")
             playerID = AxolAPI.generateGUID();
@@ -53,8 +65,11 @@ class Globals
         else
             SeenTut = Save.data.seenTut;
 
-        #if !android
+        #if (!android && !desktop)
         AxolAPI.initSave(playerID, Save);
+        #end
+        #if desktop
+        if(storageReady)DesktopOnline.start(Save);
         #end
         Counts.init();
         #if android

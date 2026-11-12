@@ -16,6 +16,12 @@ import openfl.utils.Object;
 
 class HiScoreState extends FlxSubState
 {
+    #if desktop
+    var desktopFocus=new DesktopFocus(2,0);
+    var onlineToken:String;
+    var onlineWait=0.0;
+    var localSaved=true;
+    #end
     public var messages:Array<FlxBitmapText>;
     public var font:FlxBitmapFont;
     public var ready:Bool = false;
@@ -41,10 +47,18 @@ class HiScoreState extends FlxSubState
 
         #if android
         addLine("Local Hi Scores");
+        #elseif desktop
+        addLine("Local Hi Scores");
         #else
         addLine("Hi Scores");
         #end
+        #if desktop
+        onlineToken=Reflect.field(Scores,"desktopOnlineToken");
+        localSaved=Reflect.field(Scores,"desktopLocalSaved")!=false;
+        addLine(!localSaved?"Local save failed":Reflect.field(Scores,"desktopOnlinePending")==true?"Online: Pending":"Online: Unavailable");
+        #else
         addLine("");
+        #end
 
         var scores:Array<Object> = Scores.data.scores.scores;
         for (s in scores)
@@ -156,4 +170,25 @@ class HiScoreState extends FlxSubState
         messages.push(t);
         add(t);
     }
+    #if desktop
+    override public function update(elapsed:Float):Void {
+        super.update(elapsed);
+        if(onlineToken!=null){
+            onlineWait+=elapsed;
+            var result=DesktopOnline.takeResult(onlineToken);
+            if(result!=null || onlineWait>=10){
+                var sent=result!=null && result.status=="ok";
+                messages[1].text=localSaved?(sent?"Online: Sent":"Online: Unavailable"):(sent?"Sent; local save failed":"Local save failed");
+                messages[1].screenCenter(FlxAxes.X);
+                onlineToken=null;
+            }
+        }
+        if(!ready||subState!=null)return;
+        var frame=DesktopInput.sample(elapsed);
+        var accept=desktopFocus.update(frame);
+        desktopFocus.paint([buttonReplay,buttonQuit]);
+        if(desktopFocus.armed&&frame.back){closeQuit();return;}
+        if(accept){if(desktopFocus.index==0)closeReplay();else closeQuit();}
+    }
+    #end
 }

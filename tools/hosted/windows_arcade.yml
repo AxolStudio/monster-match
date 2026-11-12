@@ -1,0 +1,69 @@
+name: Monster Match Windows arcade validation
+on:
+  push:
+    branches: ['work/monster-windows-build-20261112']
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: game
+    env:
+      MONSTER_SOURCE_SHA: SOURCE_SHA
+      HXCPP_COMPILE_THREADS: 3
+      HXCPP_COMPILE_CACHE: ${{ github.workspace }}/.hxcpp-cache
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: AxolStudio/monster-match
+          ref: ${{ env.MONSTER_SOURCE_SHA }}
+          path: game
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: AxolStudio/axollib
+          ref: 6aa05f11c30b8011827933c3e9e77ab38986a201
+          path: game/axollib
+          persist-credentials: false
+      - uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.3.7
+      - uses: actions/cache/restore@v4
+        with:
+          path: .hxcpp-cache
+          key: monster-hxcpp-win2022-haxe437-hxcpp432-${{ env.MONSTER_SOURCE_SHA }}
+          restore-keys: monster-hxcpp-win2022-haxe437-hxcpp432-
+      - name: Install isolated pinned Windows dependencies
+        run: ./tools/Setup-WindowsLibraries.ps1
+      - name: Android preservation and offline unit tests
+        run: |
+          python tools/Test-ArcadePreservation.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./tools/Test-ArcadeCore.ps1
+      - name: Isolated native regression and independent input smoke
+        run: ./tools/Build-ArcadeTests.ps1
+      - name: Compile single fullscreen Windows candidate (no launch)
+        run: ./tools/Build-WindowsCandidate.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MonsterMatch-Windows
+          path: game/candidate
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: .hxcpp-cache
+          key: monster-hxcpp-win2022-haxe437-hxcpp432-${{ env.MONSTER_SOURCE_SHA }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: monster-windows-diagnostics
+          path: game/diagnostics
+          if-no-files-found: warn
+          retention-days: 14

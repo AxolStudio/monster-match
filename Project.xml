@@ -24,6 +24,7 @@
 
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="false" />
+    <window if="windows" fullscreen="true" />
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
@@ -66,7 +67,8 @@
 	<include path="axollib/include.xml" />
 
 
-	<haxelib name="flixel" version="6.1.2" />
+	<haxelib name="flixel" version="6.1.2" unless="desktop" />
+    <haxelib name="flixel" version="6.2.1" if="desktop" />
 
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" version="4.0.1" />
@@ -94,7 +96,7 @@
 
 	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
 	<!-- Keep touch, mouse, and keyboard available for Android and ChromeOS. -->
-	<haxedef name="FLX_NO_GAMEPAD" />
+	<haxedef name="FLX_NO_GAMEPAD" unless="desktop" />
 	<haxedef name="FLX_NO_HEALTH" />
 
 	<!--Disable the Flixel core sound tray-->

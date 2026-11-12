@@ -15,6 +15,9 @@ import flixel.util.FlxColor;
 
 class CreditsState extends FlxState
 {
+    #if desktop
+    var desktopFocus=new DesktopFocus(1,0);
+    #end
     public var messages:Array<FlxBitmapText>;
     public var messages2:Array<FlxBitmapText>;
     public var font:FlxBitmapFont;
@@ -141,4 +144,15 @@ class CreditsState extends FlxState
 
         super.create();
     }
+    #if desktop
+    override public function update(elapsed:Float):Void {
+        super.update(elapsed);
+        if(!ready||subState!=null)return;
+        var frame=DesktopInput.sample(elapsed);
+        var accept=desktopFocus.update(frame);
+        desktopFocus.paint([buttonQuit]);
+        if(desktopFocus.armed&&frame.back){closeQuit();return;}
+        if(accept){closeQuit();}
+    }
+    #end
 }

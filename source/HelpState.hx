@@ -13,6 +13,9 @@ import flixel.util.FlxTimer;
 
 class HelpState extends FlxState
 {
+    #if desktop
+    var desktopFocus=new DesktopFocus(1);
+    #end
     public var story:FlxSprite;
     public var cauldron:FlxSprite;
     public var tube:Tube;
@@ -299,6 +302,17 @@ class HelpState extends FlxState
     {
         super.update(elapsed);
 
+        #if desktop
+        if(ready&&subState==null){
+            var frame=DesktopInput.sample(elapsed);
+            var accept=desktopFocus.update(frame);
+            desktopFocus.paint([exitButton]);
+            if(desktopFocus.armed){
+                if(frame.back||accept)exitScreen();
+                else if(!scrolling&&frame.dy!=0)story.y=FlxMath.bound(story.y-frame.dy*12,Math.min(0,FlxG.height-story.height),0);
+            }
+        }
+        #else
         if (ready)
         {
             upButton.alpha = downButton.alpha = exitButton.alpha = .66;
@@ -331,6 +345,8 @@ class HelpState extends FlxState
                 exitButton.alpha = 1;
             }
         }
+
+        #end
 
         tube.fillAmount += .25 * elapsed;
         if (tube.fillAmount >= 1)

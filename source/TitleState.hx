@@ -14,6 +14,10 @@ import flixel.util.FlxColor;
 
 class TitleState extends FlxState
 {
+    #if desktop
+    var desktopFocus=new DesktopFocus(4);
+    var desktopExit:ServiceButton;
+    #end
     public var buttonPlay:FlxSpriteButton;
     public var buttonHelp:FlxSpriteButton;
     public var buttonCredits:FlxSpriteButton;
@@ -94,6 +98,10 @@ class TitleState extends FlxState
         add(buttonScores);
         #end
 
+        #if desktop
+        desktopExit=new ServiceButton(76,FlxG.height-14,42,"EXIT",openDesktopExit);
+        desktopExit.alpha=0;add(desktopExit);
+        #end
         FlxG.camera.fade(FlxColor.BLACK, 1, true);
         FlxTween.num(0, 1, 1, {type: FlxTweenType.ONESHOT, ease: FlxEase.sineIn, startDelay: .2}, function(Value:Float)
         {
@@ -152,6 +160,22 @@ class TitleState extends FlxState
         super.create();
     }
 
+    #if desktop
+    function openDesktopExit():Void {
+        if(!ready)return;
+        desktopFocus.reset();openSubState(new DesktopExit());
+    }
+    override public function update(elapsed:Float):Void {
+        super.update(elapsed);
+        if(!ready||subState!=null)return;
+        desktopExit.alpha=1;
+        var frame=DesktopInput.sample(elapsed);
+        var accept=desktopFocus.update(frame);
+        desktopFocus.paint([buttonPlay,buttonHelp,buttonCredits,desktopExit]);
+        if(desktopFocus.armed&&frame.back){openDesktopExit();return;}
+        if(accept)switch(desktopFocus.index){case 0:clickPlay();case 1:clickHelp();case 2:clickCredits();case 3:openDesktopExit();}
+    }
+    #end
     private function clickPlay():Void
     {
         if (!ready)

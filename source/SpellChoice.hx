@@ -10,6 +10,10 @@ import flixel.util.FlxColor;
 
 class SpellChoice extends FlxSubState
 {
+    #if desktop
+    var desktopFocus = new DesktopFocus(3);
+    var desktopCards = true;
+    #end
     private var back:FlxSprite;
     private var cards:Array<SpellCard>;
 
@@ -133,6 +137,14 @@ class SpellChoice extends FlxSubState
 
         if (ready)
         {
+            #if desktop
+            var frame=DesktopInput.sample(elapsed);
+            var desktopAccept=desktopFocus.update(frame);
+            if(frame.dx!=0||frame.dy!=0||frame.accept)desktopCards=true;
+            #if FLX_MOUSE
+            if(FlxG.mouse.deltaX!=0||FlxG.mouse.deltaY!=0||FlxG.mouse.justReleased)desktopCards=false;
+            #end
+            #end
             var over:Int = -1;
             if (GamePointer.overlaps(cards[0]))
             {
@@ -152,6 +164,13 @@ class SpellChoice extends FlxSubState
                 if (cards[2].y > (FlxG.height / 2) - 27)
                     cards[2].y -= 1;
             }
+            #if desktop
+            if(desktopCards){
+                over=desktopFocus.index;
+                if(cards[over].y>(FlxG.height/2)-27)cards[over].y-=1;
+            }
+            for(i in 0...cards.length)cards[i].color=desktopCards&&i==over?0xffffdd66:0xffffffff;
+            #end
             if (over != currentHover)
             {
                 currentHover = over;
@@ -168,7 +187,11 @@ class SpellChoice extends FlxSubState
                 }
             }
 
+            #if desktop
+            if(over!=-1&&((desktopCards&&desktopAccept)||(!desktopCards&&GamePointer.releasedOver(cards[over]))))
+            #else
             if (over != -1 && GamePointer.releasedOver(cards[over]))
+            #end
             {
                 ready = false;
                 Sounds.play("spell", .66);

@@ -35,6 +35,10 @@ class GameOver extends FlxSubState
     public var tCount:Int = 0;
     public var score:Int = 0;
     private var reportPlatform:Bool;
+    #if desktop
+    private var desktopScoreSubmitted=false;
+    private var desktopInitials:DesktopOnlineInitials;
+    #end
 
     public var stats:Array<String> = [];
 
@@ -304,6 +308,13 @@ class GameOver extends FlxSubState
             }
             #end
 
+            #if desktop
+            if(desktopInitials==null)desktopInitials=new DesktopOnlineInitials(initVals,letters.length);
+            var submit=desktopInitials.step(DesktopInput.sample(elapsed));
+            initVals=desktopInitials.values.copy();sel=desktopInitials.selected;
+            updateInits();updateCursor();
+            if(submit){ready=false;cursor.visible=false;Sounds.play("match",.5);submitScore();}
+            #else
             if (FlxG.keys.anyJustPressed([DOWN, S]))
             {
                 initVals[sel] = FlxMath.wrap(initVals[sel] + 1, 0, letters.length - 1);
@@ -352,6 +363,7 @@ class GameOver extends FlxSubState
                     submitScore();
                 }
             }
+            #end
         }
     }
 
@@ -369,6 +381,17 @@ class GameOver extends FlxSubState
         Globals.Save.flush();
         if (reportPlatform) PlayServices.submitScore(score);
         scoreSent({data: {scores: {scores: rows}}});
+        #elseif desktop
+        if(desktopScoreSubmitted)return;
+        desktopScoreSubmitted=true;
+        var rows=LocalScores.insert(Globals.Save.data.localScores,initials,score);
+        Globals.Save.data.localScores=rows;
+        Globals.Save.data.init=initials;
+        var localSaved=false;
+        try localSaved=Globals.Save.flush() catch(_:Dynamic) {}
+        var token=reportPlatform?DesktopOnline.submitScore(score,initials):null;
+        scoreSent({data:{scores:{scores:rows}},desktopOnlineToken:token,
+            desktopOnlinePending:reportPlatform&&DesktopOnline.ready,desktopLocalSaved:localSaved});
         #else
         AxolAPI.sendScore(score, initials, scoreSent);
         #end

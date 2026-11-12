@@ -14,6 +14,9 @@ import flixel.util.FlxAxes;
 
 class PauseScreen extends FlxSubState
 {
+    #if desktop
+    var desktopFocus=new DesktopFocus(2);
+    #end
     private var back:FlxSprite;
 
     private var infos:Array<MonsterInfo>;
@@ -90,6 +93,10 @@ class PauseScreen extends FlxSubState
     {
         // popup ask confirm
         Sounds.play("click", .2);
+        #if desktop
+        if(!ready)return;
+        desktopFocus.reset();
+        #end
         openSubState(new ConfirmQuit());
     }
 
@@ -117,8 +124,17 @@ class PauseScreen extends FlxSubState
         super.update(elapsed);
         if (!ready)
             return;
+        #if desktop
+        if(subState!=null)return;
+        var frame=DesktopInput.sample(elapsed);
+        var accept=desktopFocus.update(frame);
+        desktopFocus.paint([unpause,quit]);
+        if(desktopFocus.armed&&(frame.back||frame.pause)){resumeGame();return;}
+        if(accept){if(desktopFocus.index==0)resumeGame();else quitGame();}
+        #else
         if (GamePointer.pauseReleased())
             resumeGame();
+        #end
     }
 
     private function resumeGame():Void
