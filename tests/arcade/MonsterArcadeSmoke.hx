@@ -21,6 +21,7 @@ class MonsterArcadeSmoke extends DesktopBoot {
 @:access(GameOver)
 @:access(HiScoreState)
 @:access(DesktopExit)
+@:access(flixel.FlxCamera)
 @:access(flixel.input.gamepad.FlxGamepadManager)
 @:access(flixel.input.gamepad.FlxGamepad)
 private class MonsterSmokeDriver extends FlxBasic {
@@ -65,7 +66,11 @@ private class MonsterSmokeDriver extends FlxBasic {
  function idle():Bool {var p=play();return p!=null&&p.ready&&p.subState==null&&!p.swapping&&!p.castingSpell&&!p.changingEnv&&p.desktopCursor.armed;}
  function chooseTitle(index:Int,next:Int):Void {
   var t=title();if(t==null||!t.ready||!t.desktopFocus.armed||t.subState!=null)return;
-  if(t.desktopFocus.index!=index)pulse(RIGHT,DPAD_RIGHT);else{pulse(ENTER,A);phase=next;}
+  if(t.desktopFocus.index!=index)pulse(RIGHT,DPAD_RIGHT);else{
+   var event=sys.io.File.append(output+".events");
+   event.writeString(haxe.Json.stringify({action:"title-accept",index:index,ready:t.ready,flashAlpha:FlxG.camera._fxFlashAlpha,elapsed:haxe.Timer.stamp()-started})+"\n");event.close();
+   pulse(ENTER,A);phase=next;
+  }
  }
  function step():Void {
   if(done)return;
@@ -74,7 +79,7 @@ private class MonsterSmokeDriver extends FlxBasic {
    if(haxe.Timer.stamp()-heartbeat>1){
     heartbeat=haxe.Timer.stamp();var p=play();
     sys.io.File.saveContent(output+".heartbeat",haxe.Json.stringify({phase:phase,state:Type.getClassName(Type.getClass(FlxG.state)),elapsed:heartbeat-started,
-     ready:p==null?false:p.ready,swapping:p==null?false:p.swapping,casting:p==null?false:p.castingSpell,changing:p==null?false:p.changingEnv,
+     ready:Reflect.field(FlxG.state,"ready"),flashAlpha:FlxG.camera._fxFlashAlpha,swapping:p==null?false:p.swapping,casting:p==null?false:p.castingSpell,changing:p==null?false:p.changingEnv,
      substate:FlxG.state.subState==null?"none":Type.getClassName(Type.getClass(FlxG.state.subState))}));
    }
    if(haxe.Timer.stamp()-started>225||haxe.Timer.stamp()-phaseStarted>45)throw "smoke timeout phase "+phase;

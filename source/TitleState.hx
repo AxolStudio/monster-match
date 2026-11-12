@@ -192,7 +192,11 @@ class TitleState extends FlxState
                 else
                     FlxG.switchState(() -> new PlayState());
             });
+        #if desktop
+        }, true); // A ready title may still be flashing; never discard its action callback.
+        #else
         });
+        #end
     }
 
     private function clickHelp():Void
@@ -208,7 +212,11 @@ class TitleState extends FlxState
             {
                 FlxG.switchState(() -> new HelpState());
             });
+        #if desktop
+        }, true); // A ready title may still be flashing; never discard its action callback.
+        #else
         });
+        #end
     }
 
     private function clickCredits():Void
@@ -224,6 +232,10 @@ class TitleState extends FlxState
             {
                 FlxG.switchState(() -> new CreditsState());
             });
+        #if desktop
+        }, true); // A ready title may still be flashing; never discard its action callback.
+        #else
         });
+        #end
     }
 }
