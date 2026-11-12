@@ -169,7 +169,7 @@ class SpellChoice extends FlxSubState
                 over=desktopFocus.index;
                 if(cards[over].y>(FlxG.height/2)-27)cards[over].y-=1;
             }
-            for(i in 0...cards.length)cards[i].color=desktopCards&&i==over?0xffffdd66:0xffffffff;
+            for(i in 0...cards.length)cards[i].setDesktopFocus(desktopCards&&i==over);
             #end
             if (over != currentHover)
             {

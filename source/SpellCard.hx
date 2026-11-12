@@ -45,6 +45,10 @@ class SpellCard extends FlxGroup
         add(symbol);
     }
 
+    #if desktop
+    public function setDesktopFocus(focused:Bool):Void {back.color=focused?0xffffdd66:0xffffffff;}
+    #end
+
     private function set_x(Value:Float):Float
     {
         x = Value;
