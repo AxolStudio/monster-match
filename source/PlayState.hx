@@ -1661,16 +1661,18 @@ class PlayState extends FlxState
 
         #if desktop
         var desktopFrame=DesktopInput.sample(elapsed);
-        var desktopAccept=false;
-        if(changingEnv||swapping||castingSpell)desktopCursor.reset();
-        else desktopAccept=desktopCursor.update(desktopFrame);
-        if(desktopFrame.dx!=0||desktopFrame.dy!=0||desktopFrame.accept)desktopCursorActive=true;
+        var desktopAccept=desktopCursor.update(desktopFrame,changingEnv||swapping||castingSpell);
+        var mouseActive=false;var touchActive=false;
         #if FLX_MOUSE
-        if(FlxG.mouse.deltaX!=0||FlxG.mouse.deltaY!=0||FlxG.mouse.justReleased)desktopCursorActive=false;
+        mouseActive=FlxG.mouse.deltaX!=0||FlxG.mouse.deltaY!=0||FlxG.mouse.justReleased;
         #end
-        if(desktopCursor.armed&&desktopFrame.back&&selectedBlock!=-1){
+        #if FLX_TOUCH
+        for(touch in FlxG.touches.list)if(touch.pressed||touch.justReleased)touchActive=true;
+        #end
+        desktopCursorActive=DesktopBoardCursor.modeAfterInput(desktopCursorActive,desktopFrame,mouseActive,touchActive);
+        if(desktopCursor.pauseArmed&&desktopFrame.back&&selectedBlock!=-1){
             selectedBlock=-1;selected.visible=false;desktopAccept=false;
-        } else if(desktopCursor.armed&&(desktopFrame.pause||desktopFrame.back))
+        } else if(desktopCursor.pauseArmed&&(desktopFrame.pause||desktopFrame.back))
         #else
         if (GamePointer.pauseReleased())
         #end

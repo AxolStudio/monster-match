@@ -19,7 +19,9 @@ class HiScoreState extends FlxSubState
     #if desktop
     var desktopFocus=new DesktopFocus(2,0);
     var onlineToken:String;
-    var onlineWait=0.0;
+    var onlineBoard:DesktopOnlineLeaderboard;
+    var highlightInitials:String;
+    var highlightAmount:Int;
     var localSaved=true;
     #end
     public var messages:Array<FlxBitmapText>;
@@ -61,11 +63,21 @@ class HiScoreState extends FlxSubState
         #end
 
         var scores:Array<Object> = Scores.data.scores.scores;
+        #if desktop
+        var local=[for(row in scores){initials:Std.string(row.initials),amount:Std.int(row.amount)}];
+        onlineBoard=new DesktopOnlineLeaderboard(local,onlineToken!=null && Reflect.field(Scores,"desktopOnlinePending")==true,localSaved);
+        highlightInitials=Initials;highlightAmount=Amount;
+        // Fixed ten-row display can show either list without reallocating animated UI.
+        for(i in 0...10)addLine("");
+        renderDesktopScores();
+        #else
         for (s in scores)
         {
             addLine(StringTools.rpad(Std.string(s.initials) + " ", ".", 20) + " " +
                 StringTools.lpad(Std.string(s.amount), "0", 6), Std.string(s.initials) == Initials && Std.parseInt(Std.string(s.amount)) == Amount);
         }
+
+        #end
 
         buttonReplay = new FlxSpriteButton(0, 0, null, closeReplay);
         buttonReplay.loadGraphic(GraphicsCache.loadGraphic("assets/images/replay_button.png"), true, 36, 12);
@@ -95,6 +107,9 @@ class HiScoreState extends FlxSubState
         if (!ready)
             return;
         ready = false;
+        #if desktop
+        onlineBoard.close();onlineToken=null;
+        #end
         PlayServices.cancelUi();
         Sounds.play("click", .2);
         FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
@@ -108,6 +123,9 @@ class HiScoreState extends FlxSubState
         if (!ready)
             return;
         ready = false;
+        #if desktop
+        onlineBoard.close();onlineToken=null;
+        #end
         PlayServices.cancelUi();
         Sounds.play("click", .2);
         FlxG.camera.fade(FlxColor.BLACK, 1, false, function()
@@ -171,21 +189,38 @@ class HiScoreState extends FlxSubState
         add(t);
     }
     #if desktop
+    function renderDesktopScores():Void {
+        messages[0].text=onlineBoard.title();
+        messages[1].text=onlineBoard.status();
+        var rows=onlineBoard.rows();
+        for(i in 0...10){
+            var line=messages[i+2];
+            if(i<rows.length){
+                var row=rows[i];
+                line.text=StringTools.rpad(row.initials+" ",".",20)+" "+StringTools.lpad(Std.string(row.amount),"0",6);
+                line.color=row.initials==highlightInitials&&row.amount==highlightAmount?FlxColor.YELLOW:FlxColor.WHITE;
+            }else {line.text=i==0?"No scores yet":"";line.color=FlxColor.WHITE;}
+            line.screenCenter(FlxAxes.X);
+        }
+        messages[0].screenCenter(FlxAxes.X);messages[1].screenCenter(FlxAxes.X);
+    }
+    override public function destroy():Void {
+        if(onlineBoard!=null)onlineBoard.close();onlineToken=null;
+        super.destroy();
+    }
     override public function update(elapsed:Float):Void {
         super.update(elapsed);
-        if(onlineToken!=null){
-            onlineWait+=elapsed;
-            var result=DesktopOnline.takeResult(onlineToken);
-            if(result!=null || onlineWait>=10){
-                var sent=result!=null && result.status=="ok";
-                messages[1].text=localSaved?(sent?"Online: Sent":"Online: Unavailable"):(sent?"Sent; local save failed":"Local save failed");
-                messages[1].screenCenter(FlxAxes.X);
-                onlineToken=null;
-            }
+        if(onlineBoard.pending()){
+            var result=onlineToken==null?null:DesktopOnline.takeResult(onlineToken);
+            if(onlineBoard.update(elapsed,result))renderDesktopScores();
+            if(!onlineBoard.pending())onlineToken=null;
         }
         if(!ready||subState!=null)return;
         var frame=DesktopInput.sample(elapsed);
-        var accept=desktopFocus.update(frame);
+        if(desktopFocus.armed && frame.dy!=0 && onlineBoard.toggle())renderDesktopScores();
+        if(GamePointer.releasedOver(messages[0]) && onlineBoard.toggle())renderDesktopScores();
+        // Vertical input selects the displayed list; horizontal retains Replay/Quit.
+        var accept=desktopFocus.update({dx:frame.dx,dy:0,accept:frame.accept,back:frame.back,pause:frame.pause,neutral:frame.neutral});
         desktopFocus.paint([buttonReplay,buttonQuit]);
         if(desktopFocus.armed&&frame.back){closeQuit();return;}
         if(accept){if(desktopFocus.index==0)closeReplay();else closeQuit();}

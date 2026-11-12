@@ -105,7 +105,19 @@ private class MonsterSmokeDriver extends FlxBasic {
     case 8:
      var p=play();if(p.desktopCursor.column==1){require(p.selectedBlock==selected.ID,"navigation keeps selected origin");pulse(ENTER,A);phase=9;}
     case 9:
-     var p=play();if(p.swapping&&p.selectedBlock==-1){require(selected.x!=selectedX,"real swap tween moved selected block");pass("adjacent board accept enters real swap and moves object");phase=10;}
+     var p=play();if(p.swapping&&p.selectedBlock==-1){
+      require(selected.x!=selectedX,"real swap tween moved selected block");pass("adjacent board accept enters real swap and moves object");
+      pulse(P,START);phase=90;
+     }
+    case 90:
+     var p=pause();if(p!=null){
+      require(play().swapping,"pause must attach while the real swap is still active");
+      pass("P/Start opens PauseScreen during active swap, independently of board-selection gate");phase=91;
+     }
+    case 91:
+     var p=pause();if(p!=null&&p.ready&&p.desktopFocus.armed){pulse(ESCAPE,B);phase=92;}
+    case 92:
+     if(idle()){pass("cancel after mid-swap pause returns to idle gameplay");phase=10;}
     case 10: if(idle()){pulse(ESCAPE,START);phase=11;}
     case 11:
      var p=pause();if(p!=null&&p.ready&&p.desktopFocus.armed){pass("pause opens by device");pulse(ESCAPE,B);phase=12;}

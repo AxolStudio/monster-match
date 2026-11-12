@@ -15,6 +15,16 @@ class DesktopBoardCursorTest {
   c.update(frame(1,0,false,false));c.reset();check(!c.armed&&c.column==1,"modal reset preserves cell");
   check(!c.update(frame(0,0,true,false)),"held modal accept ignored");
   c.update(frame());check(c.update(frame(0,0,true,false)),"accept after modal release");
+  var busy=new DesktopBoardCursor();busy.update(frame());
+  var pauseFrame=frame(0,0,false,false);pauseFrame.pause=true;
+  check(!busy.update(pauseFrame,true)&&busy.pauseArmed&&!busy.armed,"busy board still permits pause");
+  check(!busy.update(frame(1,0,true,false),true)&&busy.column==0,"busy board ignores move and accept");
+  busy.reset();busy.update(pauseFrame,true);check(!busy.pauseArmed,"modal held pause stays disarmed even busy");
+  busy.update(frame(),true);check(busy.pauseArmed&&!busy.armed,"neutral rearms pause while board busy");
+  check(!DesktopBoardCursor.modeAfterInput(true,frame(),false,true),"touch selects pointer mode without mouse");
+  check(!DesktopBoardCursor.modeAfterInput(true,frame(),true,false),"mouse selects pointer mode");
+  check(DesktopBoardCursor.modeAfterInput(false,frame(1,0,false,false),false,false),"controller reclaims focus");
+  check(!DesktopBoardCursor.modeAfterInput(true,frame(1,0,true,false),false,true),"active touch wins simultaneous device pulse");
   trace(count+" board cursor assertions passed");
  }
 }

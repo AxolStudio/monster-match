@@ -140,10 +140,14 @@ class SpellChoice extends FlxSubState
             #if desktop
             var frame=DesktopInput.sample(elapsed);
             var desktopAccept=desktopFocus.update(frame);
-            if(frame.dx!=0||frame.dy!=0||frame.accept)desktopCards=true;
+            var mouseActive=false;var touchActive=false;
             #if FLX_MOUSE
-            if(FlxG.mouse.deltaX!=0||FlxG.mouse.deltaY!=0||FlxG.mouse.justReleased)desktopCards=false;
+            mouseActive=FlxG.mouse.deltaX!=0||FlxG.mouse.deltaY!=0||FlxG.mouse.justReleased;
             #end
+            #if FLX_TOUCH
+            for(touch in FlxG.touches.list)if(touch.pressed||touch.justReleased)touchActive=true;
+            #end
+            desktopCards=DesktopBoardCursor.modeAfterInput(desktopCards,frame,mouseActive,touchActive);
             #end
             var over:Int = -1;
             if (GamePointer.overlaps(cards[0]))

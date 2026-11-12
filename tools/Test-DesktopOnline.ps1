@@ -1,7 +1,7 @@
 $ErrorActionPreference='Stop'
 Push-Location (Split-Path -Parent $PSScriptRoot)
 try {
- foreach($test in @('DesktopOnlineSessionTest','DesktopOnlineDispatcherTest','DesktopOnlineConcurrencyTest','DesktopOnlineBudgetTest','DesktopOnlineClientTest','DesktopOnlineInitialsTest','DesktopOnlineFacadeTest')) {
+ foreach($test in @('DesktopOnlineSessionTest','DesktopOnlineDispatcherTest','DesktopOnlineConcurrencyTest','DesktopOnlineBudgetTest','DesktopOnlineClientTest','DesktopOnlineLeaderboardTest','DesktopOnlineInitialsTest','DesktopOnlineFacadeTest')) {
   haxe -cp source -cp tests/desktop-online -cp tests/desktop-online/stubs -main $test -D desktop -D desktop_input_test --interp
   if($LASTEXITCODE -ne 0){throw "$test failed"}
  }
