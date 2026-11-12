@@ -39,6 +39,7 @@
 	</config:android>
 	<haxeflag name="-dce" value="full" if="android" />
 	<haxeflag name="--macro" value="FullIntro.enable()" if="android || full_intro" />
+	<haxeflag name="--macro" value="haxe.macro.Compiler.addGlobalMetadata('flixel.system.debug.log.BitmapLog', '@:build(FullIntro.repairBitmapLog())', false, true, false)" if="desktop" />
 	<include path="extensions/play-games/include.xml" if="android" />
 
 	<window allow-high-dpi="true" />
