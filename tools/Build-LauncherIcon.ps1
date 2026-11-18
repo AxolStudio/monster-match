@@ -1,16 +1,9 @@
 # Reproduce the existing 8x8 icon as Android vector paths and a 512px Play export.
-# Existing pixels only: remove gray frame and black backdrop; never modify source PNG.
+# No new artwork, interpolation, cropping, or changes to the source PNG.
 $ErrorActionPreference='Stop'
 Add-Type -AssemblyName System.Drawing
 $repoRoot=Split-Path -Parent $PSScriptRoot
-$originalIcon=[Drawing.Bitmap]::new((Join-Path $repoRoot 'assets/icons/icon.png'))
-if($originalIcon.Width -ne 8 -or $originalIcon.Height -ne 8){throw 'Expected original 8x8 icon'}
-$sourceIcon=[Drawing.Bitmap]::new(6,6,[Drawing.Imaging.PixelFormat]::Format32bppArgb)
-for($y=0;$y -lt 6;$y++){for($x=0;$x -lt 6;$x++){
-    $c=$originalIcon.GetPixel($x+1,$y+1)
-    if($c.ToArgb() -ne [Drawing.Color]::Black.ToArgb()){$sourceIcon.SetPixel($x,$y,$c)}
-}}
-$originalIcon.Dispose()
+$sourceIcon=[Drawing.Bitmap]::new((Join-Path $repoRoot 'assets/icons/icon.png'))
 $resRoot=Join-Path $repoRoot 'extensions/play-games/android/src/main/res'
 $artRoot=Join-Path $repoRoot 'artwork/launcher'
 foreach($dir in @('drawable','drawable-anydpi-v26','drawable-anydpi-v33')) { New-Item -ItemType Directory -Force (Join-Path $resRoot $dir) | Out-Null }
@@ -34,7 +27,7 @@ $paths=@(); $mono=@(); $svg=@()
 $listing=[Drawing.Bitmap]::new(512,512,[Drawing.Imaging.PixelFormat]::Format32bppArgb)
 $graphics=[Drawing.Graphics]::FromImage($listing)
 $graphics.Clear([Drawing.Color]::FromArgb(255,23,23,23))
-$listingStep=64; $listingOffset=64
+$listingStep=512/$sourceIcon.Width
 if($listingStep -ne [Math]::Floor($listingStep) -or $sourceIcon.Width -ne $sourceIcon.Height){throw 'Listing requires an exact integer square enlargement'}
 for($y=0;$y -lt $sourceIcon.Height;$y++){for($x=0;$x -lt $sourceIcon.Width;$x++){
     $color=$sourceIcon.GetPixel($x,$y)
@@ -44,7 +37,7 @@ for($y=0;$y -lt $sourceIcon.Height;$y++){for($x=0;$x -lt $sourceIcon.Width;$x++)
     $pathData="M$px,$py h$step v$step h-$step z"
     $paths += "<path android:fillColor=`"#$hex`" android:pathData=`"$pathData`" />"
     $mono += "<path android:fillColor=`"#FFFFFFFF`" android:pathData=`"$pathData`" />"
-    $sx=$listingOffset+$x*$listingStep; $sy=$listingOffset+$y*$listingStep
+    $sx=$x*$listingStep; $sy=$y*$listingStep
     $rgb=$hex.Substring(2)
     $svg += "<rect x=`"$sx`" y=`"$sy`" width=`"$listingStep`" height=`"$listingStep`" fill=`"#$rgb`" />"
     $brush=[Drawing.SolidBrush]::new($color)
@@ -61,4 +54,4 @@ $header='<vector xmlns:android="http://schemas.android.com/apk/res/android" andr
 ('<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" shape-rendering="crispEdges"><rect width="512" height="512" fill="#171717"/>'+($svg -join '')+'</svg>') | Set-Content (Join-Path $artRoot 'play-icon-512.svg')
 $listing.Save((Join-Path $artRoot 'play-icon-512.png'),[Drawing.Imaging.ImageFormat]::Png)
 $graphics.Dispose(); $listing.Dispose(); $sourceIcon.Dispose()
-Write-Output "Original character isolated without repainting; launcher source pixels = ${step}dp; all opaque corners fit the 66dp safe circle. Play export is 512x512 RGBA, exact ${listingStep}x pixels."
+Write-Output "Original icon reproduced; launcher source pixels = ${step}dp; all opaque corners fit the 66dp safe circle. Play export is 512x512 RGBA, exact ${listingStep}x pixels."
